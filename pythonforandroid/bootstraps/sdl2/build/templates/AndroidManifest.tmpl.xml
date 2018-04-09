@@ -65,6 +65,7 @@
                   android:label="@string/app_name"
                   android:configChanges="keyboardHidden|orientation{% if args.min_sdk_version >= 13 %}|screenSize{% endif %}"
                   android:screenOrientation="{{ args.orientation }}"
+                  android:launchMode="singleTask"
                   >
 
             {% if args.launcher %}
