@@ -33,16 +33,37 @@ SITE_PACKAGES_FILEN_BLACKLIST = []
 
 
 class Python3Recipe(TargetPythonRecipe):
+    '''
+    .. note::
+        In order to build certain python modules, we need to add some extra
+        recipes to our build requirements:
+
+            - ctypes: you must add the recipe for ``libffi``.
+    '''
     version = '3.7.1'
     url = 'https://www.python.org/ftp/python/{version}/Python-{version}.tgz'
     name = 'python3'
 
     depends = ['hostpython3']
     conflicts = ['python3crystax', 'python2']
-    opt_depends = ['openssl', 'sqlite3']
+    opt_depends = ['openssl', 'sqlite3', 'libffi']
 
     # This recipe can be built only against API 21+
     MIN_NDK_API = 21
+
+    def set_libs_flags(self, env, arch):
+        '''Takes care to properly link libraries with python depending on our
+        requirements and the attribute :attr:`opt_depends`.
+        '''
+        if 'libffi' in self.ctx.recipe_build_order:
+            info('Activating flags for libffi')
+            recipe = Recipe.get_recipe('libffi', self.ctx)
+            include = ' -I' + ' -I'.join(recipe.get_include_dirs(arch))
+            ldflag = ' -L' + join(recipe.get_build_dir(arch.arch),
+                                  recipe.get_host(arch), '.libs') + ' -lffi'
+            env['CPPFLAGS'] = env.get('CPPFLAGS', '') + include
+            env['LDFLAGS'] = env.get('LDFLAGS', '') + ldflag
+        return env
 
     def build_arch(self, arch):
         if self.ctx.ndk_api < self.MIN_NDK_API:
@@ -139,6 +160,8 @@ class Python3Recipe(TargetPythonRecipe):
             shprint(sh.cp, join(lib_dir, 'crtend_so.o'), './')
 
             env['SYSROOT'] = sysroot
+
+            env = self.set_libs_flags(env, arch)
 
             if not exists('config.status'):
                 shprint(sh.Command(join(recipe_build_dir, 'configure')),
