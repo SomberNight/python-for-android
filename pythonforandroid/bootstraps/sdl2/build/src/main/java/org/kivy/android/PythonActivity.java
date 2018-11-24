@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
+import android.Manifest;
 import android.view.ViewGroup;
 import android.view.SurfaceView;
 import android.app.Activity;
@@ -33,6 +34,7 @@ import java.io.InputStream;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.support.v4.app.ActivityCompat;
 
 import org.libsdl.app.SDLActivity;
 
@@ -45,6 +47,7 @@ import org.renpy.android.AssetExtract;
 
 public class PythonActivity extends SDLActivity {
     private static final String TAG = "PythonActivity";
+    private static final int MY_PERMISSIONS_STORAGE = 1001;
 
     public static PythonActivity mActivity = null;
 
@@ -70,7 +73,39 @@ public class PythonActivity extends SDLActivity {
         this.mActivity = this;
         this.showLoadingScreen();
 
+        this.maybeRequestPermissions();
+
         new UnpackFilesTask().execute(getAppRoot());
+    }
+
+    private void maybeRequestPermissions() {
+        final Activity thisActivity = this;
+        // storage
+        if (ActivityCompat.checkSelfPermission(thisActivity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted; request it
+            ActivityCompat.requestPermissions(thisActivity,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_STORAGE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+            String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_STORAGE: {
+                if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay!
+                } else {
+                    // permission denied. simply request again (FIXME)
+                    this.maybeRequestPermissions();
+                }
+                return;
+            }
+        }
     }
 
     public void loadLibraries() {
