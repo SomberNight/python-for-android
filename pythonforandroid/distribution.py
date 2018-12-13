@@ -129,7 +129,7 @@ class Distribution(object):
         # If there was a name match but we didn't already choose it,
         # then the existing dist is incompatible with the requested
         # configuration and the build cannot continue
-        if name_match_dist is not None and not allow_replace_dist:
+        if name_match_dist is not None:
             error('Asked for dist with name {name} with recipes ({req_recipes}) and '
                   'NDK API {req_ndk_api}, but a dist '
                   'with this name already exists and has either incompatible recipes '
