@@ -473,6 +473,8 @@ main.py that loads it.''')
 
     version_code = 0
     if not args.numeric_version:
+        # note: we disable p4a's automatic versionCode calculation, as we use our own scheme
+        raise ValueError("android versionCode needs to be set explicitly! (see android.numeric_version)")
         """
         Set version code in format (10 + minsdk + app_version)
         Historically versioning was (arch + minsdk + app_version),
