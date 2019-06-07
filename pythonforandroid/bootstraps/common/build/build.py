@@ -390,13 +390,13 @@ main.py that loads it.''')
     if not args.numeric_version:
         # Set version code in format (arch-minsdk-app_version)
         arch = get_dist_info_for("archs")[0]
-        arch_dict = {"x86_64": "9", "arm64-v8a": "8", "armeabi-v7a": "7", "x86": "6"}
+        arch_dict = {"x86_64": "4", "arm64-v8a": "3", "armeabi-v7a": "2", "x86": "1"}
         arch_code = arch_dict.get(arch, '1')
         min_sdk = args.min_sdk_version
         for i in args.version.split('.'):
             version_code *= 100
             version_code += int(i)
-        args.numeric_version = "{}{}{}".format(arch_code, min_sdk, version_code)
+        args.numeric_version = "{}{}".format(arch_code, version_code)
 
     if args.intent_filters:
         with open(args.intent_filters) as fd:
