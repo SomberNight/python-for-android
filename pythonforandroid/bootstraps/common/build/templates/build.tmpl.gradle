@@ -34,16 +34,24 @@ android {
         versionName '{{ args.version }}'
     }
 
-    {% if args.sign -%}
     signingConfigs {
+        {% if not args.sign -%}
+        debug {
+            storeFile file(System.getenv("P4A_DEBUG_KEYSTORE"))
+            keyAlias System.getenv("P4A_DEBUG_KEYALIAS")
+            storePassword System.getenv("P4A_DEBUG_KEYSTORE_PASSWD")
+            keyPassword System.getenv("P4A_DEBUG_KEYALIAS_PASSWD")
+        }
+        {%- endif %}
+        {% if args.sign -%}
         release {
             storeFile file(System.getenv("P4A_RELEASE_KEYSTORE"))
             keyAlias System.getenv("P4A_RELEASE_KEYALIAS")
             storePassword System.getenv("P4A_RELEASE_KEYSTORE_PASSWD")
             keyPassword System.getenv("P4A_RELEASE_KEYALIAS_PASSWD")
         }
+        {%- endif %}
     }
-    {%- endif %}
 
     {% if args.packaging_options -%}
     packagingOptions {
@@ -55,6 +63,9 @@ android {
 
     buildTypes {
         debug {
+            {% if not args.sign -%}
+            signingConfig signingConfigs.debug
+            {%- endif %}
         }
         release {
             {% if args.sign -%}
