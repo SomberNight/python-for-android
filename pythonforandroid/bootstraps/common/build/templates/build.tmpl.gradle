@@ -29,7 +29,7 @@ apply plugin: 'com.android.application'
 {% endif %}
 
 android {
-    compileSdkVersion {{ android_api }}
+    compileSdkVersion 27
     buildToolsVersion '{{ build_tools_version }}'
     defaultConfig {
         minSdkVersion {{ args.min_sdk_version }}
