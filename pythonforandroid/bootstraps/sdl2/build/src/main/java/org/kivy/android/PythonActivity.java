@@ -405,6 +405,16 @@ public class PythonActivity extends SDLActivity {
         });
     }
 
+
+    public void requestFocusForMainView() {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                Log.v(TAG, "requestFocusForMainView is getting focus now.");
+                getSurface().requestFocus();
+            }
+        });
+    }
+
     public void removeLoadingScreen() {
         runOnUiThread(new Runnable() {
             public void run() {
