@@ -81,6 +81,16 @@
          SDLActivity.nativeRunMain(library, function, arguments);
 
          Log.v("SDL", "Finished main function");
+@@ -1993,6 +2018,9 @@ class DummyEdit extends View implements View.OnKeyListener {
+         if (event.getAction()==KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+             if (SDLActivity.mTextEdit != null && SDLActivity.mTextEdit.getVisibility() == View.VISIBLE) {
+                 SDLActivity.onNativeKeyboardFocusLost();
++                // if targetSdkVersion >= 28, we explicitly need to give back focus
++                // see https://github.com/spesmilo/electrum/issues/6276
++                SDLActivity.mSurface.requestFocus();
+             }
+         }
+         return super.onKeyPreIme(keyCode, event);
 @@ -2002,7 +2028,7 @@
      public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
          ic = new SDLInputConnection(this, true);
