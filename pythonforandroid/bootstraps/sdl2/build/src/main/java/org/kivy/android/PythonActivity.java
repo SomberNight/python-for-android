@@ -409,6 +409,8 @@ public class PythonActivity extends SDLActivity {
                     ((ViewGroup)PythonActivity.mImageView.getParent()).removeView(
                         PythonActivity.mImageView);
                     PythonActivity.mImageView = null;
+                    // give focus to main View now
+                    getSurface().requestFocus();
                 }
             }
         });
