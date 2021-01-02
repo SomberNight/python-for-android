@@ -1141,7 +1141,10 @@ class CythonRecipe(PythonRecipe):
         env['LDSHARED'] = env['CC'] + ' -shared'
         # shprint(sh.whereis, env['LDSHARED'], _env=env)
         env['LIBLINK'] = 'NOTNONE'
-        env['NDKPLATFORM'] = self.ctx.ndk_platform
+        if self.ctx.ndk_standalone:
+            env['NDKPLATFORM'] = self.ctx.ndk_sysroot  # FIXME
+        else:
+            env['NDKPLATFORM'] = self.ctx.ndk_platform
         if self.ctx.copy_libs:
             env['COPYLIBS'] = '1'
 
