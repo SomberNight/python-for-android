@@ -22,6 +22,11 @@ allprojects {
     }
 }
 
+tasks.withType(AbstractArchiveTask) {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
 {% if is_library %}
 apply plugin: 'com.android.library'
 {% else %}
