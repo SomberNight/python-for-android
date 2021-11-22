@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="bundled_in_lib">
+        <item>{{ arch }};libplugins_bearer_qandroidbearer_{{ arch }}.so:libplugins_platforms_qtforandroid_{{ arch }}.so</item>
+
+        <item>{{ arch }};libplugins_imageformats_qgif_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_imageformats_qico_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_imageformats_qjpeg_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_imageformats_qtga_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_imageformats_qtiff_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_imageformats_qwebp_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_imageformats_qicns_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_imageformats_qwbmp_{{ arch }}.so</item>
+
+        <!--
+        <item>{{ arch }};libplugins_qmltooling_qmldbg_preview_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_qmltooling_qmldbg_native_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_qmltooling_qmldbg_debugger_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_qmltooling_qmldbg_local_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_qmltooling_qmldbg_messages_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_qmltooling_qmldbg_quickprofiler_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_qmltooling_qmldbg_nativedebugger_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_qmltooling_qmldbg_server_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_qmltooling_qmldbg_tcp_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_qmltooling_qmldbg_inspector_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_qmltooling_qmldbg_profiler_{{ arch }}.so</item>
+        -->
+    </string-array>
+    <string-array name="bundled_libs">
+        <item>{{ arch }};{{ python_lib }}</item>
+        <!-- libmain MUST be last -->
+        <item>{{ arch }};main</item>
+    </string-array>
+    <string-array name="qt_libs">
+        <item>{{ arch }};c++_shared</item>
+        <item>{{ arch }};ssl1.1</item>
+        <item>{{ arch }};Qt5Core_{{ arch }}</item>
+        <item>{{ arch }};Qt5Network_{{ arch }}</item>
+        <item>{{ arch }};Qt5Qml_{{ arch }}</item>
+        <item>{{ arch }};Qt5Gui_{{ arch }}</item>
+        <item>{{ arch }};Qt5QmlModels_{{ arch }}</item>
+        <item>{{ arch }};Qt5Quick_{{ arch }}</item>
+        <item>{{ arch }};Qt5QuickShapes_{{ arch }}</item>
+        <item>{{ arch }};Qt5QuickParticles_{{ arch }}</item>
+        <item>{{ arch }};Qt5QmlWorkerScript_{{ arch }}</item>
+        <item>{{ arch }};Qt5QuickTemplates2_{{ arch }}</item>
+        <item>{{ arch }};Qt5QuickControls2_{{ arch }}</item>
+        <item>{{ arch }};Qt5RemoteObjects_{{ arch }}</item>
+        <item>{{ arch }};Qt5Multimedia_{{ arch }}</item>
+        <item>{{ arch }};Qt5MultimediaQuick_{{ arch }}</item>
+    </string-array>
+    <string-array name="qt_sources">
+        <item>https://download.qt.io/ministro/android/qt5/qt-5.7</item>
+    </string-array>
+</resources>

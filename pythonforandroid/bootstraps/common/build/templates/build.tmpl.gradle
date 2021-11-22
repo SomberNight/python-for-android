@@ -125,7 +125,8 @@ android {
     }
 
     aaptOptions {
-        noCompress "tflite"
+        // "rcc" files are Qt binary resources
+        noCompress "tflite", "rcc"
     }
 
 }

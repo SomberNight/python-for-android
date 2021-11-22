@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">{{ args.name }}</string>
+    <string name="private_version">{{ private_version }}</string>
+    <string name="presplash_color">{{ args.presplash_color }}</string>
+    <string name="urlScheme">{{ url_scheme }}</string>
+
+    <string name="fatal_error_msg">Your application encountered a fatal error and cannot continue.</string>
+    <string name="ministro_needed_msg">This application requires Ministro service. Would you like to install it?</string>
+    <string name="ministro_not_found_msg">"Can't find Ministro service.
+The application can't start."</string>
+    <string name="unsupported_android_version">Unsupported Android version.</string>
+</resources>
