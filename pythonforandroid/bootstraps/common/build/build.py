@@ -241,6 +241,7 @@ def make_qml_rcc(assets_dir):
     qt5_path = join('jni', 'qt5')
     with open('android_rcc_bundle.qrc', 'w') as qrc_file:
         qrc_file.write('<!DOCTYPE RCC><RCC version="1.0"><qresource>')
+
         for qmlcomp in components:
             qmlfiles = glob.glob(join(qt5_path, qmlcomp, 'qml', '**'), recursive=True)
             qmlfiles.sort()
@@ -249,6 +250,19 @@ def make_qml_rcc(assets_dir):
                     alias = qmlfile.replace(join(qt5_path, qmlcomp), '')[1:]
                     print(alias + ':' + qmlfile)
                     qrc_file.write(f'<file alias="{alias}">{qmlfile}</file>')
+
+        # dirty hack to include material style files in resource file
+        # these should be available from the material style plugin
+        # but somehow this doesn't work (TODO)
+        basepath = join(qt5_path, 'qtquickcontrols2', 'src', 'imports', 'controls', 'material')
+        qmlfiles = glob.glob(join(basepath, '**'), recursive=True)
+        qmlfiles.sort()
+        for qmlfile in qmlfiles:
+            if not qmlfile.endswith('.so') and not os.path.isdir(qmlfile):
+                alias = qmlfile.replace(basepath, 'qml/QtQuick/Controls.2/Material')
+                print(alias + ':' + qmlfile)
+                qrc_file.write(f'<file alias="{alias}">{qmlfile}</file>')
+
         qrc_file.write('</qresource></RCC>')
 
     rcc = sh.Command(join(qt5_path, 'qtbase', 'bin', 'rcc'))
