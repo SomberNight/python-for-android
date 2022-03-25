@@ -19,6 +19,7 @@ import org.renpy.android.ResourceManager;
 import org.kivy.android.launcher.Project;
 
 import org.qtproject.qt5.android.QtActivityDelegate;
+import org.qtproject.qt5.android.multimedia.QtMultimediaUtils;
 
 /*
  * this class is added to android.app.static_init_classes metadata key
@@ -33,12 +34,12 @@ public class PythonActivityInit {
 
     public void setActivity(Activity activity, Object o) {
         Log.v(TAG, "PythonActivityInit setActivity running");
-
-        //QtActivityDelegate delegate = (QtActivityDelegate)o;
         Log.v(TAG, activity.getClass().getName());
         mActivity = (PythonActivity)activity;
         Log.v(TAG, o.getClass().getName());
         mLoader = (QtActivityDelegate)o;
+
+        QtMultimediaUtils.setContext(mActivity);
     }
 
     public void setContext(Context context) {
@@ -61,6 +62,9 @@ public class PythonActivityInit {
 
         PythonActivity.initialize(); //Bundle extras = mActivity.getIntent().getExtras();
 
+        // This is a hack, until we get nativeSetenv working.
+        // this delegates setting the env vars to Qt, but this trick
+        // only works for debug builds..
         HashMap<String,String> additionalEnv = new HashMap<>();
 
         if (mActivity.getIntent() != null && mActivity.getIntent().getAction() != null &&

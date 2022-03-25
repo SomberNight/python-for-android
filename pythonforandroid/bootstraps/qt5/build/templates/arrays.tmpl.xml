@@ -12,6 +12,11 @@
         <item>{{ arch }};libplugins_imageformats_qicns_{{ arch }}.so</item>
         <item>{{ arch }};libplugins_imageformats_qwbmp_{{ arch }}.so</item>
 
+        <item>{{ arch }};libplugins_playlistformats_qtmultimedia_m3u_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_video_videonode_qtsgvideonode_android_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_mediaservice_qtmedia_android_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_audio_qtaudio_opensles_{{ arch }}.so</item>
+
         <!--
         <item>{{ arch }};libplugins_qmltooling_qmldbg_preview_{{ arch }}.so</item>
         <item>{{ arch }};libplugins_qmltooling_qmldbg_native_{{ arch }}.so</item>
