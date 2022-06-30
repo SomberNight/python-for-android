@@ -146,8 +146,8 @@ class Qt5Recipe(BootstrapNDKRecipe):
 
             shprint(configure, _tail=50, _critical=True)
 
-            shprint(sh.make, '-j' + str(cpu_count() - 4), _critical=True )
-            shprint(sh.make, '-j' + str(cpu_count() - 4), 'install', _critical=True )
+            shprint(sh.make, '-j' + str(cpu_count()), _critical=True )
+            shprint(sh.make, '-j' + str(cpu_count()), 'install', _critical=True )
 
 
     def postbuild_arch(self, arch):
