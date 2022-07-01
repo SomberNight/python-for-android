@@ -268,6 +268,11 @@ def make_qml_rcc(assets_dir):
     rcc = sh.Command(join(qt5_path, 'qtbase', 'bin', 'rcc'))
     rcc('--root', '/android_rcc_bundle/', '--binary', '-o',
         join(assets_dir, 'android_rcc_bundle.rcc'), 'android_rcc_bundle.qrc')
+    # TODO temp only. put source qrc file also into apk, for reprodubility-testing
+    shutil.copy(
+        'android_rcc_bundle.qrc',
+        join(assets_dir, 'android_rcc_bundle.qrc')
+    )
 
 def make_package(args):
     # If no launcher is specified, require a main.py/main.pyo:
