@@ -236,6 +236,17 @@ def compile_dir(dfn, optimize_python=True):
         exit(1)
 
 def make_qml_rcc(assets_dir):
+    def should_include_in_qrc(fname):
+        if os.path.isdir(fname):
+            return False
+        basename = os.path.basename(fname)
+        if basename in ('Makefile', ):
+            return False
+        ext = os.path.splitext(basename)[1]
+        if ext in ('.so', '.h', '.cpp'):
+            return False
+        return True
+
     # hardcoded for now, should be made automatic/configurable
     components = ['qtdeclarative', 'qtquickcontrols2', 'qtmultimedia']
     qt5_path = join('jni', 'qt5')
@@ -246,7 +257,7 @@ def make_qml_rcc(assets_dir):
             qmlfiles = glob.glob(join(qt5_path, qmlcomp, 'qml', '**'), recursive=True)
             qmlfiles.sort()
             for qmlfile in qmlfiles:
-                if not qmlfile.endswith('.so') and not os.path.isdir(qmlfile):
+                if should_include_in_qrc(qmlfile):
                     alias = qmlfile.replace(join(qt5_path, qmlcomp), '')[1:]
                     print(alias + ':' + qmlfile)
                     qrc_file.write(f'<file alias="{alias}">{qmlfile}</file>')
@@ -258,7 +269,7 @@ def make_qml_rcc(assets_dir):
         qmlfiles = glob.glob(join(basepath, '**'), recursive=True)
         qmlfiles.sort()
         for qmlfile in qmlfiles:
-            if not qmlfile.endswith('.so') and not os.path.isdir(qmlfile):
+            if should_include_in_qrc(qmlfile):
                 alias = qmlfile.replace(basepath, 'qml/QtQuick/Controls.2/Material')
                 print(alias + ':' + qmlfile)
                 qrc_file.write(f'<file alias="{alias}">{qmlfile}</file>')
