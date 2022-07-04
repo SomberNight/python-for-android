@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
   int ret = 0;
   FILE *fd;
 
-  LOGP("Initializing Python for Android");
+  LOGP("Initializing Python for Android. heyheyhey_8");
 
   // Set a couple of built-in environment vars:
   setenv("P4A_BOOTSTRAP", bootstrap_name, 1);  // env var to identify p4a to applications
@@ -399,7 +399,23 @@ JNIEXPORT void JNICALL Java_org_kivy_android_PythonService_nativeStart(
   main(1, argv);
 }
 
-#if defined(BOOTSTRAP_NAME_WEBVIEW) || defined(BOOTSTRAP_NAME_SERVICEONLY)
+void Java_org_kivy_android_PythonActivityInit_nativeSetenv(
+                                    JNIEnv* env, jclass cls,
+                                    jstring name, jstring value)
+//JNIEXPORT void JNICALL SDL_JAVA_INTERFACE(nativeSetenv)(
+//                                    JNIEnv* env, jclass cls,
+//                                    jstring name, jstring value)
+{
+    const char *utfname = (*env)->GetStringUTFChars(env, name, NULL);
+    const char *utfvalue = (*env)->GetStringUTFChars(env, value, NULL);
+
+    setenv(utfname, utfvalue, 1);
+
+    (*env)->ReleaseStringUTFChars(env, name, utfname);
+    (*env)->ReleaseStringUTFChars(env, value, utfvalue);
+}
+
+#if defined(BOOTSTRAP_NAME_WEBVIEW) || defined(BOOTSTRAP_NAME_SERVICEONLY) || defined(BOOTSTRAP_NAME_QT5)
 // Webview and service_only uses some more functions:
 
 void Java_org_kivy_android_PythonActivity_nativeSetenv(

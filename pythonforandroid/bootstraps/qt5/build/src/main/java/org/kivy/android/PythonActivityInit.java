@@ -32,8 +32,10 @@ public class PythonActivityInit {
     private PythonActivity mActivity;
     private QtActivityDelegate mLoader;
 
+    public static native void nativeSetenv(String name, String value);
+
     public void setActivity(Activity activity, Object o) {
-        Log.v(TAG, "PythonActivityInit setActivity running");
+        Log.v(TAG, "PythonActivityInit setActivity running. heyheyhey_8");
         Log.v(TAG, activity.getClass().getName());
         mActivity = (PythonActivity)activity;
         Log.v(TAG, o.getClass().getName());
@@ -73,12 +75,9 @@ public class PythonActivityInit {
 
             Project p = Project.scanDirectory(path);
             String entry_point = mActivity.getEntryPoint(p.dir);
-//             PythonActivity.nativeSetenv("ANDROID_ENTRYPOINT", p.dir + "/" + entry_point);
-//             PythonActivity.nativeSetenv("ANDROID_ARGUMENT", p.dir);
-//             PythonActivity.nativeSetenv("ANDROID_APP_PATH", p.dir);
-            additionalEnv.put("ANDROID_ENTRYPOINT", p.dir + "/" + entry_point);
-            additionalEnv.put("ANDROID_ARGUMENT", p.dir);
-            additionalEnv.put("ANDROID_APP_PATH", p.dir);
+            PythonActivityInit.nativeSetenv("ANDROID_ENTRYPOINT", p.dir + "/" + entry_point);
+            PythonActivityInit.nativeSetenv("ANDROID_ARGUMENT", p.dir);
+            PythonActivityInit.nativeSetenv("ANDROID_APP_PATH", p.dir);
 
             if (p != null) {
                 if (p.landscape) {
@@ -98,27 +97,18 @@ public class PythonActivityInit {
 //             }
         } else {
             String entry_point = mActivity.getEntryPoint(app_root_dir);
-//             PythonActivity.nativeSetenv("ANDROID_ENTRYPOINT", entry_point);
-//             PythonActivity.nativeSetenv("ANDROID_ARGUMENT", app_root_dir);
-//             PythonActivity.nativeSetenv("ANDROID_APP_PATH", app_root_dir);
-            additionalEnv.put("ANDROID_ENTRYPOINT", entry_point);
-            additionalEnv.put("ANDROID_ARGUMENT", app_root_dir);
-            additionalEnv.put("ANDROID_APP_PATH", app_root_dir);
+            PythonActivityInit.nativeSetenv("ANDROID_ENTRYPOINT", entry_point);
+            PythonActivityInit.nativeSetenv("ANDROID_ARGUMENT", app_root_dir);
+            PythonActivityInit.nativeSetenv("ANDROID_APP_PATH", app_root_dir);
         }
 
         String mFilesDirectory = mActivity.getFilesDir().getAbsolutePath();
         Log.v(TAG, "Setting env vars for start.c and Python to use");
-//         PythonActivity.nativeSetenv("ANDROID_PRIVATE", mFilesDirectory);
-//         PythonActivity.nativeSetenv("ANDROID_UNPACK", app_root_dir);
-//         PythonActivity.nativeSetenv("PYTHONHOME", app_root_dir);
-//         PythonActivity.nativeSetenv("PYTHONPATH", app_root_dir + ":" + app_root_dir + "/lib");
-//         PythonActivity.nativeSetenv("PYTHONOPTIMIZE", "2");
-
-        additionalEnv.put("ANDROID_PRIVATE", mFilesDirectory);
-        additionalEnv.put("ANDROID_UNPACK", app_root_dir);
-        additionalEnv.put("PYTHONHOME", app_root_dir);
-        additionalEnv.put("PYTHONPATH", app_root_dir + ":" + app_root_dir + "/lib");
-        additionalEnv.put("PYTHONOPTIMIZE", "2");
+        PythonActivityInit.nativeSetenv("ANDROID_PRIVATE", mFilesDirectory);
+        PythonActivityInit.nativeSetenv("ANDROID_UNPACK", app_root_dir);
+        PythonActivityInit.nativeSetenv("PYTHONHOME", app_root_dir);
+        PythonActivityInit.nativeSetenv("PYTHONPATH", app_root_dir + ":" + app_root_dir + "/lib");
+        PythonActivityInit.nativeSetenv("PYTHONOPTIMIZE", "2");
 
         String combinedEnv = new String();
         for (String key: additionalEnv.keySet()) {
