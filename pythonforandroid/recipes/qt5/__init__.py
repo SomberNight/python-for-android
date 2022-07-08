@@ -10,7 +10,7 @@ import glob
 
 class Qt5Recipe(BootstrapNDKRecipe):
     name = 'qt5'
-    url = 'git+http://code.qt.io/qt/qt5.git'
+    url = 'git+https://code.qt.io/qt/qt5.git'
     #version = '5.15.2'
     version = '9b43a43ee96198674060c6b9591e515e2d27c28f'
 
