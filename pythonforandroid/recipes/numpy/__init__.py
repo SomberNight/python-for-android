@@ -5,6 +5,7 @@ from multiprocessing import cpu_count
 from os.path import join
 import glob
 import sh
+import shutil
 
 
 class NumpyRecipe(CompiledComponentsPythonRecipe):
