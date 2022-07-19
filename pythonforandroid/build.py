@@ -392,7 +392,7 @@ class Context:
         check_ndk_api(ndk_api, self.android_api)
 
         # path to some tools
-        self.ccache = sh.which("ccache")
+        self.ccache = shutil.which("ccache")
         if not self.ccache:
             info('ccache is missing, the build will not be optimized in the '
                  'future.')
@@ -463,7 +463,7 @@ class Context:
 
         for executable in ("pkg-config", "autoconf", "automake", "libtoolize",
                            "tar", "bzip2", "unzip", "make", "gcc", "g++"):
-            if not sh.which(executable):
+            if not shutil.which(executable):
                 warning(f"Missing executable: {executable} is not installed")
 
         if not ok:
@@ -1012,7 +1012,7 @@ def copylibs_function(soname, objs_paths, extra_link_dirs=None, env=None):
     elif 'READELF' in os.environ:
         readelf = os.environ['READELF']
     else:
-        readelf = sh.which('readelf').strip()
+        readelf = shutil.which('readelf').strip()
     readelf = sh.Command(readelf).bake('-d')
 
     dest = dirname(soname)
