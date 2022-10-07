@@ -108,14 +108,14 @@ class Qt5Recipe(BootstrapNDKRecipe):
 
         env = self.get_recipe_env(arch)
         with current_directory(self.get_jni_dir()):
-            shprint(sh.ndk_build, "V=1", _env=env, _critical=True)
+            shprint(sh.Command(join(self.ctx.ndk_dir, "ndk-build")), "V=1", _env=env, _critical=True)
 
         build_dir = self.get_build_dir(arch.arch)
         with current_directory(build_dir):
             info("compiling qt5 from sources")
             debug("environment: {}".format(env))
 
-            info("NDK sysroot: %s" % self.ctx.ndk_sysroot)
+            info("NDK sysroot: %s" % self.ctx.ndk.sysroot)
             info("libdir: %s" % join(build_dir, 'obj', 'local', arch.arch))
 
             configure = sh.Command('./configure')

@@ -34,7 +34,7 @@ class PyQt5Recipe(Recipe):
             'py-pylib-dir': self.ctx.python_recipe.link_root(arch.arch),
             'py-include-dir': self.ctx.python_recipe.include_root(arch.arch),
             'py-pylib-shlib': 'python{}'.format(self.ctx.python_recipe.link_version),
-            'target-dir': self.ctx.get_python_install_dir()
+            'target-dir': self.ctx.get_python_install_dir(arch.arch),
         }
 
         project_dict['tool']['sip']['bindings'] = {}
