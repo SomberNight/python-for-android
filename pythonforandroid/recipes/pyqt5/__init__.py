@@ -2,22 +2,24 @@ import sh
 from os.path import join
 from pathlib import Path
 from multiprocessing import cpu_count
+import shutil
+import copy
 import toml
 
 from pythonforandroid.logger import (shprint, info, logger, debug)
-from pythonforandroid.recipe import CythonRecipe, Recipe
+from pythonforandroid.recipe import Recipe
 from pythonforandroid.toolchain import current_directory
 
 class PyQt5Recipe(Recipe):
     version = '5.15.6'
-    url = 'https://files.pythonhosted.org/packages/3b/27/fd81188a35f37be9b3b4c2db1654d9439d1418823916fe702ac3658c9c41/PyQt5-5.15.6.tar.gz'
+    url = "https://pypi.python.org/packages/source/P/PyQt5/PyQt5-{version}.tar.gz"
     name = 'pyqt5'
 
-    depends = ['qt5', 'pyjnius', 'setuptools', 'pyqt5sip']
+    depends = ['qt5', 'pyjnius', 'setuptools', 'pyqt5sip', 'hostpython3', 'pyqt_builder']
 
     def get_recipe_env(self, arch):
         env = super().get_recipe_env(arch)
-        recipe = Recipe.get_recipe('qt5', self.ctx)
+        recipe = self.get_recipe('qt5', self.ctx)
         qt5_env = recipe.get_recipe_env(arch)
         env['TARGET_QMAKEPATH'] = qt5_env['TARGET_QMAKEPATH']
 
@@ -63,7 +65,16 @@ class PyQt5Recipe(Recipe):
         with current_directory(build_dir):
             info("compiling pyqt5")
 
-            buildcmd = sh.Command('sip-install')
+            hostpython = self.get_recipe('hostpython3', self.ctx)
+            pythondir = hostpython.get_path_to_python()
+            site_packages = join(pythondir, 'Lib', 'site-packages')
+            env = copy.copy(env)
+            env['PYTHONPATH'] = f'{site_packages}:' + env.get('PYTHONPATH', '')
+
+            buildcmd = sh.Command(self.ctx.hostpython)
+            # buildcmd = buildcmd.bake('-m', 'sipbuild.tools.install')
+            sip_install = join(pythondir, 'usr', 'local', 'bin', 'sip-install')
+            buildcmd = buildcmd.bake(sip_install)
             buildcmd = buildcmd.bake('--confirm-license', '--qt-shared', '--verbose')
             buildcmd = buildcmd.bake('--no-tools', '--no-qml-plugin', '--no-designer-plugin', '--no-dbus-python')
 
