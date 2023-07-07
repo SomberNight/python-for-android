@@ -1,5 +1,6 @@
 from pythonforandroid.recipe import PythonRecipe
 
+
 class PlyRecipe(PythonRecipe):
     version = '3.11'
     url = "https://pypi.python.org/packages/source/p/ply/ply-{version}.tar.gz"

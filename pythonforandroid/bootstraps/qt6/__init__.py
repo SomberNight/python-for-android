@@ -4,6 +4,7 @@ from os.path import join
 import sh
 import glob
 
+
 class Qt6Bootstrap(Bootstrap):
     name = 'qt6'
 
@@ -14,7 +15,7 @@ class Qt6Bootstrap(Bootstrap):
     def distribute_aidl(self, aidl_dir, dest_dir="src"):
         '''Copy existing javaclasses from build dir to current dist dir.'''
         info('Copying aidl files')
-        filenames = glob.glob(join(aidl_dir,'*'))
+        filenames = glob.glob(join(aidl_dir, '*'))
         if len(filenames) > 0:
             ensure_dir(dest_dir)
             shprint(sh.cp, '-a', *filenames, dest_dir)
@@ -35,9 +36,9 @@ class Qt6Bootstrap(Bootstrap):
 
             # self.distribute_aars(arch)
             self.distribute_javaclasses(self.ctx.javaclass_dir,
-                                        dest_dir=join("src", "main", "java"))
+                dest_dir=join("src", "main", "java"))
             self.distribute_aidl(self.ctx.aidl_dir,
-                                        dest_dir=join("src", "main", "aidl"))
+                dest_dir=join("src", "main", "aidl"))
 
             for arch in self.ctx.archs:
                 python_bundle_dir = join(f'_python_bundle__{arch.arch}', '_python_bundle')

@@ -1,11 +1,8 @@
 from pythonforandroid.recipe import BootstrapNDKRecipe
 from pythonforandroid.toolchain import Recipe, current_directory
-from pythonforandroid.logger import info, debug, shprint, warning
-from os.path import join, isdir, isfile
-from os import environ
-from multiprocessing import cpu_count
+from pythonforandroid.logger import info, debug, shprint
+from os.path import join
 import sh
-import glob
 
 
 class Qt6Recipe(BootstrapNDKRecipe):
@@ -14,7 +11,7 @@ class Qt6Recipe(BootstrapNDKRecipe):
     url = 'https://download.qt.io/archive/qt/6.4/{version}/single/qt-everywhere-src-{version}.zip'
     dir_name = 'qt6'
 
-    built_libraries = {'dummy':'.'}
+    built_libraries = {'dummy': '.'}
 
     depends = ['python3', 'hostqt6']
     conflicts = ['sdl2', 'genericndkbuild']
@@ -22,11 +19,8 @@ class Qt6Recipe(BootstrapNDKRecipe):
 
     need_stl_shared = True
 
-
     # override as we can't statically define the libs due to arch in filename
     def get_libraries(self, arch_name, in_context=False):
-        install_dir = 'install'
-
         # TODO: don't hardcode, infer from build config
         self.built_libraries = {
             f'libQt6Core_{arch_name}.so': 'qtbase/lib',
@@ -34,7 +28,6 @@ class Qt6Recipe(BootstrapNDKRecipe):
             f'libQt6Network_{arch_name}.so': 'qtbase/lib',
             f'libQt6Xml_{arch_name}.so': 'qtbase/lib',
             f'libQt6Concurrent_{arch_name}.so': 'qtbase/lib',
-            # f'libQt6Sql_{arch_name}.so': 'qtbase/lib',
             f'libQt6Qml_{arch_name}.so': 'qtbase/lib',
             f'libQt6QmlModels_{arch_name}.so': 'qtbase/lib',
             f'libQt6QmlWorkerScript_{arch_name}.so': 'qtbase/lib',
@@ -43,11 +36,9 @@ class Qt6Recipe(BootstrapNDKRecipe):
             f'libQt6QuickParticles_{arch_name}.so': 'qtbase/lib',
             f'libQt6QuickTemplates2_{arch_name}.so': 'qtbase/lib',
             f'libQt6QuickControls2_{arch_name}.so': 'qtbase/lib',
-            #f'libQt6RemoteObjects_{arch_name}.so': 'qtbase/lib',
             f'libQt6Multimedia_{arch_name}.so': 'qtbase/lib',
             f'libQt6MultimediaQuick_{arch_name}.so': 'qtbase/lib',
             f'libQt6Svg_{arch_name}.so': 'qtbase/lib',
-            #f'libQt6AndroidExtras_{arch_name}.so': 'qtbase/lib',
             f'libQt6QuickLayouts_{arch_name}.so': 'qtbase/lib',
             f'libQt6QuickTimeline_{arch_name}.so': 'qtbase/lib',
             f'libQt6QmlCore_{arch_name}.so': 'qtbase/lib',
@@ -68,17 +59,10 @@ class Qt6Recipe(BootstrapNDKRecipe):
             f'libplugins_imageformats_qsvg_{arch_name}.so': 'qtbase/plugins/imageformats',
 
             f'libplugins_iconengines_qsvgicon_{arch_name}.so': 'qtbase/plugins/iconengines',
-
-            # f'libplugins_playlistformats_qtmultimedia_m3u_{arch_name}.so': 'qtmultimedia/plugins/playlistformats',
-            # f'libplugins_video_videonode_qtsgvideonode_android_{arch_name}.so': 'qtmultimedia/plugins/video/videonode',
-            # f'libplugins_mediaservice_qtmedia_android_{arch_name}.so': 'qtmultimedia/plugins/mediaservice',
-            # f'libplugins_audio_qtaudio_opensles_{arch_name}.so': 'qtmultimedia/plugins/audio',
-
             f'libplugins_platforms_qtforandroid_{arch_name}.so': 'qtbase/plugins/platforms',
             f'libplugins_multimedia_androidmediaplugin_{arch_name}.so': 'qtbase/plugins/multimedia',
             f'libplugins_networkinformation_qandroidnetworkinformation_{arch_name}.so': 'qtbase/plugins/networkinformation',
             f'libplugins_tls_qopensslbackend_{arch_name}.so': 'qtbase/plugins/tls',
-
 
             # f'libplugins_qmltooling_qmldbg_preview_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
             # f'libplugins_qmltooling_qmldbg_native_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
@@ -92,11 +76,8 @@ class Qt6Recipe(BootstrapNDKRecipe):
             # f'libplugins_qmltooling_qmldbg_inspector_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
             # f'libplugins_qmltooling_qmldbg_profiler_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
 
-
-
             f'libqml_QtQml_qmlplugin_{arch_name}.so': 'qtbase/qml/QtQml',
             f'libqml_QtQml_WorkerScript_workerscriptplugin_{arch_name}.so': 'qtbase/qml/QtQml/WorkerScript',
-            #f'libqml_QtQml_StateMachine_qtqmlstatemachine_{arch_name}.so': 'qtbase/qml/QtQml/StateMachine',
             f'libqml_QtQml_Models_modelsplugin_{arch_name}.so': 'qtbase/qml/QtQml/Models',
             f'libqml_QtQuick_Window_quickwindowplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Window',
             f'libqml_QtQuick_Layouts_qquicklayoutsplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Layouts',
@@ -106,10 +87,6 @@ class Qt6Recipe(BootstrapNDKRecipe):
             f'libqml_QtQuick_Templates_qtquicktemplates2plugin_{arch_name}.so': 'qtbase/qml/QtQuick/Templates',
             f'libqml_QtQuick_Controls_qtquickcontrols2plugin_{arch_name}.so': 'qtbase/qml/QtQuick/Controls',
             f'libqml_QtQuick_Controls_Material_qtquickcontrols2materialstyleplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Controls/Material',
-            # f'libqml_QtRemoteObjects_qtremoteobjects_{arch_name}.so': 'qtremoteobjects/qml/QtRemoteObjects',
-            #f'libqml_QtGraphicalEffects_qtgraphicaleffectsplugin_{arch_name}.so': 'qtgraphicaleffects/qml/QtGraphicalEffects',
-            #f'libqml_QtGraphicalEffects_private_qtgraphicaleffectsprivate_{arch_name}.so': 'qtgraphicaleffects/qml/QtGraphicalEffects/private',
-            # f'libqml_QtMultimedia_declarative_multimedia_{arch_name}.so': 'qtmultimedia/qml/QtMultimedia',
             f'libqml_QtMultimedia_quickmultimediaplugin_{arch_name}.so': 'qtbase/qml/QtMultimedia',
         }
 
@@ -166,7 +143,7 @@ class Qt6Recipe(BootstrapNDKRecipe):
             configure = configure.bake('-nomake', 'tests')
             configure = configure.bake('-nomake', 'examples')
             configure = configure.bake('-no-widgets')
-            configure = configure.bake('-submodules',','.join(
+            configure = configure.bake('-submodules', ','.join(
                 ['qtbase', 'qtdeclarative', 'qtimageformats', 'qtmultimedia']))
             configure = configure.bake('-skip', ','.join(
                 ['qtquick3d', 'qtquick3dphysics', 'qtactiveqt']))
@@ -193,14 +170,12 @@ class Qt6Recipe(BootstrapNDKRecipe):
             env['LD_LIBRARY_PATH'] = join(x.get_install_dir(), 'lib')
             configure = configure.bake('-DQT_HOST_PATH=%s' % x.get_install_dir())
 
-
             info(str(configure))
 
             shprint(configure, _tail=50, _env=env, _critical=True)
 
-            shprint(sh.make, _env=env, _critical=True )
-            shprint(sh.make, 'install', _env=env, _critical=True )
-
+            shprint(sh.make, _env=env, _critical=True)
+            shprint(sh.make, 'install', _env=env, _critical=True)
 
     def postbuild_arch(self, arch):
         super().postbuild_arch(arch)
@@ -209,5 +184,6 @@ class Qt6Recipe(BootstrapNDKRecipe):
         with current_directory(self.get_build_dir(arch.arch)):
             shprint(sh.cp, '-a', join('qtbase', 'src', 'android', 'java', 'src', 'org'), self.ctx.javaclass_dir)
             shprint(sh.cp, '-a', join('qtbase', 'src', 'android', 'java', 'src', 'org'), self.ctx.aidl_dir)
+
 
 recipe = Qt6Recipe()

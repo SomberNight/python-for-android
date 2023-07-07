@@ -1,14 +1,13 @@
 import sh
 from os.path import join
 from pathlib import Path
-from multiprocessing import cpu_count
-import shutil
 import copy
 import toml
 
-from pythonforandroid.logger import (shprint, info, logger, debug)
+from pythonforandroid.logger import shprint, info
 from pythonforandroid.recipe import Recipe
 from pythonforandroid.toolchain import current_directory
+
 
 class PyQt6Recipe(Recipe):
     version = '6.4.2'
@@ -91,11 +90,12 @@ class PyQt6Recipe(Recipe):
 
             shprint(buildcmd, _env=env, _tail=50, _critical=True)
 
-            with open(join(build_dir,'compile_finished'), 'w') as fp:
+            with open(join(build_dir, 'compile_finished'), 'w') as fp:
                 fp.write('')
 
     def should_build(self, arch):
         build_dir = self.get_build_dir(arch.arch)
-        return not Path(join(build_dir,'compile_finished')).is_file()
+        return not Path(join(build_dir, 'compile_finished')).is_file()
+
 
 recipe = PyQt6Recipe()

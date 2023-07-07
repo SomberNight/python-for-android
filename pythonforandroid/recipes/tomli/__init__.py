@@ -1,9 +1,10 @@
 from pythonforandroid.recipe import PythonRecipe
 
-from pythonforandroid.logger import shprint,info
+from pythonforandroid.logger import shprint, info
 from pythonforandroid.util import current_directory
 import sh
-from os.path import join,dirname
+from os.path import join, dirname
+
 
 class TomliRecipe(PythonRecipe):
     version = "2.0.1"
@@ -57,5 +58,6 @@ class TomliRecipe(PythonRecipe):
                 '--root={}'.format(dirname(self.real_hostpython_location)),
                 '--install-lib=Lib/site-packages',
                 _env=env, *self.setup_extra_args)
+
 
 recipe = TomliRecipe()

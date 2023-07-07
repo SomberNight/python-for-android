@@ -1,15 +1,15 @@
-from os.path import join, isdir, isfile
+from os.path import join, isfile
 from os import environ
 from multiprocessing import cpu_count
 import sh
-import glob
 
 from pythonforandroid.recipe import Recipe
 from pythonforandroid.toolchain import current_directory
-from pythonforandroid.logger import info, debug, shprint, warning
+from pythonforandroid.logger import info, debug, shprint
 from pythonforandroid.util import ensure_dir
 
 from pythonforandroid.recipes.qt6 import Qt6Recipe
+
 
 class HostQt6Recipe(Recipe):
     r = Qt6Recipe()
@@ -24,7 +24,6 @@ class HostQt6Recipe(Recipe):
     build_subdir = 'native-build'
 
     built_libraries = {}
-
 
     def get_recipe_env(self, arch=None, with_flags_in_cc=True, with_python=True):
         env = environ.copy()
@@ -79,8 +78,8 @@ class HostQt6Recipe(Recipe):
 
             configure = configure.bake('-nomake', 'tests')
             configure = configure.bake('-nomake', 'examples')
-            configure = configure.bake('-make','tools')
-            configure = configure.bake('-submodules',','.join(
+            configure = configure.bake('-make', 'tools')
+            configure = configure.bake('-submodules', ','.join(
                 ['qtbase', 'qttools']))
             configure = configure.bake('-skip', ','.join(
                 ['qtactiveqt']))
@@ -89,8 +88,8 @@ class HostQt6Recipe(Recipe):
 
             shprint(configure, _tail=50, _critical=True)
 
-            shprint(sh.make, '-j' + str(cpu_count()), _critical=True )
-            shprint(sh.make, '-j' + str(cpu_count()), 'install', _critical=True )
+            shprint(sh.make, '-j' + str(cpu_count()), _critical=True)
+            shprint(sh.make, '-j' + str(cpu_count()), 'install', _critical=True)
 
 
 recipe = HostQt6Recipe()

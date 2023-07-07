@@ -1,10 +1,5 @@
-import sh
-from os.path import join
-from multiprocessing import cpu_count
+from pythonforandroid.recipe import PythonRecipe
 
-from pythonforandroid.logger import (shprint, info, logger, debug)
-from pythonforandroid.recipe import CythonRecipe, Recipe, PythonRecipe
-from pythonforandroid.toolchain import current_directory
 
 class PyQt6SipRecipe(PythonRecipe):
     version = '13.5.1'
