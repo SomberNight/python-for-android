@@ -41,6 +41,8 @@ def get_dist_info_for(key, error_if_missing=True):
 def get_hostpython():
     return get_dist_info_for('hostpython')
 
+def get_python_version():
+    return get_dist_info_for('python_version')
 
 def get_bootstrap_name():
     return get_dist_info_for('bootstrap')
@@ -243,32 +245,38 @@ def make_qml_rcc(assets_dir):
     with open('android_rcc_bundle.qrc', 'w') as qrc_file:
         qrc_file.write('<!DOCTYPE RCC><RCC version="1.0"><qresource>')
 
-        for qmlcomp in components:
-            qmlfiles = glob.glob(join(qt6_path, qmlcomp, 'qml', '**'), recursive=True)
-            qmlfiles.sort()
-            for qmlfile in qmlfiles:
-                if should_include_in_qrc(qmlfile):
-                    alias = qmlfile.replace(join(qt6_path, qmlcomp), '')[1:]
-                    print(alias + ':' + qmlfile)
-                    qrc_file.write(f'<file alias="{alias}">{qmlfile}</file>')
+        # TODO: needed for qt6?
+        # for qmlcomp in components:
+        #     qmlfiles = glob.glob(join(qt6_path, qmlcomp, 'qml', '**'), recursive=True)
+        #     qmlfiles.sort()
+        #     for qmlfile in qmlfiles:
+        #         if should_include_in_qrc(qmlfile):
+        #             alias = qmlfile.replace(join(qt6_path, qmlcomp), '')[1:]
+        #             print(alias + ':' + qmlfile)
+        #             qrc_file.write(f'<file alias="{alias}">{qmlfile}</file>')
 
         # dirty hack to include material style files in resource file
         # these should be available from the material style plugin
         # but somehow this doesn't work (TODO)
-        basepath = join(qt6_path, 'qtquickcontrols2', 'src', 'imports', 'controls', 'material')
-        qmlfiles = glob.glob(join(basepath, '**'), recursive=True)
-        qmlfiles.sort()
-        for qmlfile in qmlfiles:
-            if should_include_in_qrc(qmlfile):
-                alias = qmlfile.replace(basepath, 'qml/QtQuick/Controls.2/Material')
-                print(alias + ':' + qmlfile)
-                qrc_file.write(f'<file alias="{alias}">{qmlfile}</file>')
+        # TODO: needed for qt6?
+        # basepath = join(qt6_path, 'qtquickcontrols2', 'src', 'imports', 'controls', 'material')
+        # qmlfiles = glob.glob(join(basepath, '**'), recursive=True)
+        # qmlfiles.sort()
+        # for qmlfile in qmlfiles:
+        #     if should_include_in_qrc(qmlfile):
+        #         alias = qmlfile.replace(basepath, 'qml/QtQuick/Controls.2/Material')
+        #         print(alias + ':' + qmlfile)
+        #         qrc_file.write(f'<file alias="{alias}">{qmlfile}</file>')
 
         qrc_file.write('</qresource></RCC>')
 
-    rcc = sh.Command(join(qt6_path, 'qtbase', 'bin', 'rcc'))
+    hostqt6 = get_dist_info_for('hostqt6')
+    env = environ.copy()
+    env['LD_LIBRARY_PATH'] = join(hostqt6, 'lib')
+
+    rcc = sh.Command(join(hostqt6, 'libexec', 'rcc'))
     rcc('--root', '/android_rcc_bundle/', '--binary', '-o',
-        join(assets_dir, 'android_rcc_bundle.rcc'), 'android_rcc_bundle.qrc')
+        join(assets_dir, 'android_rcc_bundle.rcc'), 'android_rcc_bundle.qrc', _env=env)
 
 def make_package(args):
     # If no launcher is specified, require a main.py/main.pyc:

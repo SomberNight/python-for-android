@@ -4,6 +4,7 @@ import json
 
 from pythonforandroid.logger import (debug, info, info_notify, warning, Err_Style, Err_Fore)
 from pythonforandroid.util import current_directory, BuildInterruptingException
+from pythonforandroid.recipe import Recipe
 from shutil import rmtree
 
 
@@ -249,15 +250,17 @@ class Distribution:
         with current_directory(dirn):
             info('Saving distribution info')
             with open('dist_info.json', 'w') as fileh:
-                json.dump({'dist_name': self.name,
-                           'bootstrap': self.ctx.bootstrap.name,
-                           'archs': [arch.arch for arch in self.ctx.archs],
-                           'ndk_api': self.ctx.ndk_api,
-                           'use_setup_py': self.ctx.use_setup_py,
-                           'recipes': self.ctx.recipe_build_order + self.ctx.python_modules,
-                           'hostpython': self.ctx.hostpython,
-                           'python_version': self.ctx.python_recipe.major_minor_version_string},
-                          fileh)
+                distinfo = {'dist_name': self.name,
+                            'bootstrap': self.ctx.bootstrap.name,
+                            'archs': [arch.arch for arch in self.ctx.archs],
+                            'ndk_api': self.ctx.ndk_api,
+                            'use_setup_py': self.ctx.use_setup_py,
+                            'recipes': self.ctx.recipe_build_order + self.ctx.python_modules,
+                            'hostpython': self.ctx.hostpython,
+                            'python_version': self.ctx.python_recipe.major_minor_version_string}
+                if self.ctx.bootstrap.name == 'qt6':
+                    distinfo['hostqt6'] = Recipe.get_recipe('hostqt6', self.ctx).get_install_dir()
+                json.dump(distinfo, fileh)
 
 
 def pretty_log_dists(dists, log_func=info):
