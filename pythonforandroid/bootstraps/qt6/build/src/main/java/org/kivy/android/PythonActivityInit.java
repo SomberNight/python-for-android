@@ -47,7 +47,7 @@ public class PythonActivityInit {
 
         Log.v(TAG, "Ready to unpack");
         PythonUtil.unpackAsset(mActivity, "private", new File(app_root_dir), true);
-
+        PythonUtil.unpackPyBundle(mActivity, mActivity.getApplicationInfo().nativeLibraryDir + "/" + "libpybundle", new File(app_root_dir), false);
         Log.v(TAG, "Device: " + android.os.Build.DEVICE);
         Log.v(TAG, "Model: " + android.os.Build.MODEL);
 
