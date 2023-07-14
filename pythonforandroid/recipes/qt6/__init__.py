@@ -29,6 +29,7 @@ class Qt6Recipe(BootstrapNDKRecipe):
             f'libQt6Xml_{arch_name}.so': 'qtbase/lib',
             f'libQt6Concurrent_{arch_name}.so': 'qtbase/lib',
             f'libQt6Qml_{arch_name}.so': 'qtbase/lib',
+            f'libQt6QmlCore_{arch_name}.so': 'qtbase/lib',
             f'libQt6QmlModels_{arch_name}.so': 'qtbase/lib',
             f'libQt6QmlWorkerScript_{arch_name}.so': 'qtbase/lib',
             f'libQt6Quick_{arch_name}.so': 'qtbase/lib',
@@ -36,13 +37,12 @@ class Qt6Recipe(BootstrapNDKRecipe):
             f'libQt6QuickParticles_{arch_name}.so': 'qtbase/lib',
             f'libQt6QuickTemplates2_{arch_name}.so': 'qtbase/lib',
             f'libQt6QuickControls2_{arch_name}.so': 'qtbase/lib',
+            f'libQt6QuickControls2Impl_{arch_name}.so': 'qtbase/lib',
+            f'libQt6QuickLayouts_{arch_name}.so': 'qtbase/lib',
+            f'libQt6QuickTimeline_{arch_name}.so': 'qtbase/lib',
             f'libQt6Multimedia_{arch_name}.so': 'qtbase/lib',
             f'libQt6MultimediaQuick_{arch_name}.so': 'qtbase/lib',
             f'libQt6Svg_{arch_name}.so': 'qtbase/lib',
-            f'libQt6QuickLayouts_{arch_name}.so': 'qtbase/lib',
-            f'libQt6QuickTimeline_{arch_name}.so': 'qtbase/lib',
-            f'libQt6QmlCore_{arch_name}.so': 'qtbase/lib',
-            f'libQt6QuickControls2Impl_{arch_name}.so': 'qtbase/lib',
             f'libQt6ShaderTools_{arch_name}.so': 'qtbase/lib',
             f'libQt6OpenGL_{arch_name}.so': 'qtbase/lib',
 
@@ -87,6 +87,7 @@ class Qt6Recipe(BootstrapNDKRecipe):
             f'libqml_QtQuick_Templates_qtquicktemplates2plugin_{arch_name}.so': 'qtbase/qml/QtQuick/Templates',
             f'libqml_QtQuick_Controls_qtquickcontrols2plugin_{arch_name}.so': 'qtbase/qml/QtQuick/Controls',
             f'libqml_QtQuick_Controls_Material_qtquickcontrols2materialstyleplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Controls/Material',
+            f'libqml_QtQuick_Controls_Material_impl_qtquickcontrols2materialstyleimplplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Controls/Material/impl',
             f'libqml_QtMultimedia_quickmultimediaplugin_{arch_name}.so': 'qtbase/qml/QtMultimedia',
         }
 

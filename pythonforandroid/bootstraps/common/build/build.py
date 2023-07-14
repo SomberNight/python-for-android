@@ -17,6 +17,7 @@ import tarfile
 import tempfile
 import time
 import sh
+import glob
 
 from distutils.version import LooseVersion
 from fnmatch import fnmatch
@@ -234,41 +235,24 @@ def make_qml_rcc(assets_dir):
         if os.path.isdir(fname):
             return False
         basename = os.path.basename(fname)
-        if basename in ('Makefile', ):
-            return False
-        ext = os.path.splitext(basename)[1]
-        if ext in ('.so', '.h', '.cpp', '.bat', '.pro', '.pri', '.qrc', '.txt'):
-            return False
-        return True
+        if basename == 'qmldir':
+            return True
+        return False
 
     # hardcoded for now, should be made automatic/configurable
-    #components = ['qtdeclarative', 'qtquickcontrols2', 'qtmultimedia']
-    #qt6_path = join('jni', 'qt6')
+    components = ['QtQml', 'QtQuick', 'QtCore', 'QtMultimedia']
+    qt6_path = join('jni', 'qt6', 'qtbase', 'qml')
     with open('android_rcc_bundle.qrc', 'w') as qrc_file:
         qrc_file.write('<!DOCTYPE RCC><RCC version="1.0"><qresource>')
 
-        # TODO: needed for qt6?
-        # for qmlcomp in components:
-        #     qmlfiles = glob.glob(join(qt6_path, qmlcomp, 'qml', '**'), recursive=True)
-        #     qmlfiles.sort()
-        #     for qmlfile in qmlfiles:
-        #         if should_include_in_qrc(qmlfile):
-        #             alias = qmlfile.replace(join(qt6_path, qmlcomp), '')[1:]
-        #             print(alias + ':' + qmlfile)
-        #             qrc_file.write(f'<file alias="{alias}">{qmlfile}</file>')
-
-        # dirty hack to include material style files in resource file
-        # these should be available from the material style plugin
-        # but somehow this doesn't work (TODO)
-        # TODO: needed for qt6?
-        # basepath = join(qt6_path, 'qtquickcontrols2', 'src', 'imports', 'controls', 'material')
-        # qmlfiles = glob.glob(join(basepath, '**'), recursive=True)
-        # qmlfiles.sort()
-        # for qmlfile in qmlfiles:
-        #     if should_include_in_qrc(qmlfile):
-        #         alias = qmlfile.replace(basepath, 'qml/QtQuick/Controls.2/Material')
-        #         print(alias + ':' + qmlfile)
-        #         qrc_file.write(f'<file alias="{alias}">{qmlfile}</file>')
+        for qmlcomp in components:
+            qmlfiles = glob.glob(join(qt6_path, qmlcomp, '**'), recursive=True)
+            qmlfiles.sort()
+            for qmlfile in qmlfiles:
+                if should_include_in_qrc(qmlfile):
+                    alias = qmlfile.replace(qt6_path, 'qml')
+                    print(alias + ':' + qmlfile)
+                    qrc_file.write(f'<file alias="{alias}">{qmlfile}</file>')
 
         qrc_file.write('</qresource></RCC>')
 
