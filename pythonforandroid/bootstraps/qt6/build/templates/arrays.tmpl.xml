@@ -5,6 +5,10 @@
         <item>{{ arch }};libplugins_bearer_qandroidbearer_{{ arch }}.so:libplugins_platforms_qtforandroid_{{ arch }}.so</item>
         -->
         <item>{{ arch }};libplugins_platforms_qtforandroid_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_networkinformation_qandroidnetworkinformation_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_tls_qopensslbackend_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_multimedia_androidmediaplugin_{{ arch }}.so</item>
+        <item>{{ arch }};libQt6MultimediaQuick_{{ arch }}.so</item>
 
         <item>{{ arch }};libplugins_imageformats_qgif_{{ arch }}.so</item>
         <item>{{ arch }};libplugins_imageformats_qico_{{ arch }}.so</item>
@@ -15,17 +19,6 @@
         <item>{{ arch }};libplugins_imageformats_qicns_{{ arch }}.so</item>
         <item>{{ arch }};libplugins_imageformats_qwbmp_{{ arch }}.so</item>
         <item>{{ arch }};libplugins_imageformats_qsvg_{{ arch }}.so</item>
-
-        <!--
-        <item>{{ arch }};libplugins_playlistformats_qtmultimedia_m3u_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_video_videonode_qtsgvideonode_android_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_mediaservice_qtmedia_android_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_audio_qtaudio_opensles_{{ arch }}.so</item>
-        -->
-
-        <item>{{ arch }};libplugins_multimedia_androidmediaplugin_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_networkinformation_qandroidnetworkinformation_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_tls_qopensslbackend_{{ arch }}.so</item>
 
         <!--
         <item>{{ arch }};libplugins_qmltooling_qmldbg_preview_{{ arch }}.so</item>
@@ -50,27 +43,29 @@
         <item>{{ arch }};c++_shared</item>
         <item>{{ arch }};ssl1.1</item>
         <item>{{ arch }};Qt6Core_{{ arch }}</item>
-        <item>{{ arch }};Qt6Network_{{ arch }}</item>
-        <item>{{ arch }};Qt6Xml_{{ arch }}</item>
-        <item>{{ arch }};Qt6Concurrent_{{ arch }}</item>
+        <!-- <item>{{ arch }};Qt6Concurrent_{{ arch }}</item> -->
         <item>{{ arch }};Qt6Gui_{{ arch }}</item>
+        <item>{{ arch }};Qt6Network_{{ arch }}</item>
+        <item>{{ arch }};Qt6OpenGL_{{ arch }}</item>
         <item>{{ arch }};Qt6Qml_{{ arch }}</item>
-        <item>{{ arch }};Qt6QmlCore_{{ arch }}</item>
+        <!-- <item>{{ arch }};Qt6QmlCore_{{ arch }}</item> -->
         <item>{{ arch }};Qt6QmlModels_{{ arch }}</item>
-        <item>{{ arch }};Qt6Quick_{{ arch }}</item>
-        <item>{{ arch }};Qt6QuickShapes_{{ arch }}</item>
-        <item>{{ arch }};Qt6QuickParticles_{{ arch }}</item>
-        <item>{{ arch }};Qt6QuickLayouts_{{ arch }}</item>
-        <item>{{ arch }};Qt6QuickTimeline_{{ arch }}</item>
         <item>{{ arch }};Qt6QmlWorkerScript_{{ arch }}</item>
-        <item>{{ arch }};Qt6QuickTemplates2_{{ arch }}</item>
+        <item>{{ arch }};Qt6Quick_{{ arch }}</item>
         <item>{{ arch }};Qt6QuickControls2_{{ arch }}</item>
+        <item>{{ arch }};Qt6QuickControls2Impl_{{ arch }}</item>
+        <item>{{ arch }};Qt6QuickDialogs2_{{ arch }}</item>
+        <item>{{ arch }};Qt6QuickDialogs2Utils_{{ arch }}</item>
+        <item>{{ arch }};Qt6QuickDialogs2QuickImpl_{{ arch }}</item>
+        <item>{{ arch }};Qt6QuickLayouts_{{ arch }}</item>
+        <!--<item>{{ arch }};Qt6QuickParticles_{{ arch }}</item>-->
+        <item>{{ arch }};Qt6QuickShapes_{{ arch }}</item>
+        <item>{{ arch }};Qt6QuickTemplates2_{{ arch }}</item>
+        <!--<item>{{ arch }};Qt6QuickTimeline_{{ arch }}</item>-->
+        <item>{{ arch }};Qt6ShaderTools_{{ arch }}</item>
+        <item>{{ arch }};Qt6Svg_{{ arch }}</item>
+<!--         <item>{{ arch }};Qt6Xml_{{ arch }}</item> -->
         <item>{{ arch }};Qt6Multimedia_{{ arch }}</item>
         <item>{{ arch }};Qt6MultimediaQuick_{{ arch }}</item>
-        <item>{{ arch }};Qt6Svg_{{ arch }}</item>
-        <item>{{ arch }};Qt6OpenGL_{{ arch }}</item>
-    </string-array>
-    <string-array name="qt_sources">
-        <item>https://download.qt.io/ministro/android/qt5/qt-5.7</item>
     </string-array>
 </resources>

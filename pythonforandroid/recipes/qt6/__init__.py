@@ -24,29 +24,31 @@ class Qt6Recipe(BootstrapNDKRecipe):
         # TODO: don't hardcode, infer from build config
         self.built_libraries = {
             f'libQt6Core_{arch_name}.so': 'qtbase/lib',
+            # f'libQt6Concurrent_{arch_name}.so': 'qtbase/lib',
             f'libQt6Gui_{arch_name}.so': 'qtbase/lib',
+            f'libQt6Multimedia_{arch_name}.so': 'qtbase/lib',
+            f'libQt6MultimediaQuick_{arch_name}.so': 'qtbase/lib',
             f'libQt6Network_{arch_name}.so': 'qtbase/lib',
-            f'libQt6Xml_{arch_name}.so': 'qtbase/lib',
-            f'libQt6Concurrent_{arch_name}.so': 'qtbase/lib',
+            f'libQt6OpenGL_{arch_name}.so': 'qtbase/lib',
             f'libQt6Qml_{arch_name}.so': 'qtbase/lib',
-            f'libQt6QmlCore_{arch_name}.so': 'qtbase/lib',
+            # f'libQt6QmlCore_{arch_name}.so': 'qtbase/lib',
             f'libQt6QmlModels_{arch_name}.so': 'qtbase/lib',
             f'libQt6QmlWorkerScript_{arch_name}.so': 'qtbase/lib',
             f'libQt6Quick_{arch_name}.so': 'qtbase/lib',
-            f'libQt6QuickShapes_{arch_name}.so': 'qtbase/lib',
-            f'libQt6QuickParticles_{arch_name}.so': 'qtbase/lib',
-            f'libQt6QuickTemplates2_{arch_name}.so': 'qtbase/lib',
             f'libQt6QuickControls2_{arch_name}.so': 'qtbase/lib',
             f'libQt6QuickControls2Impl_{arch_name}.so': 'qtbase/lib',
+            f'libQt6QuickDialogs2_{arch_name}.so': 'qtbase/lib',
+            f'libQt6QuickDialogs2Utils_{arch_name}.so': 'qtbase/lib',
+            f'libQt6QuickDialogs2QuickImpl_{arch_name}.so': 'qtbase/lib',
             f'libQt6QuickLayouts_{arch_name}.so': 'qtbase/lib',
-            f'libQt6QuickTimeline_{arch_name}.so': 'qtbase/lib',
-            f'libQt6Multimedia_{arch_name}.so': 'qtbase/lib',
-            f'libQt6MultimediaQuick_{arch_name}.so': 'qtbase/lib',
-            f'libQt6Svg_{arch_name}.so': 'qtbase/lib',
+            # f'libQt6QuickParticles_{arch_name}.so': 'qtbase/lib',
+            f'libQt6QuickShapes_{arch_name}.so': 'qtbase/lib',
+            f'libQt6QuickTemplates2_{arch_name}.so': 'qtbase/lib',
+            # f'libQt6QuickTimeline_{arch_name}.so': 'qtbase/lib',
             f'libQt6ShaderTools_{arch_name}.so': 'qtbase/lib',
-            f'libQt6OpenGL_{arch_name}.so': 'qtbase/lib',
+            f'libQt6Svg_{arch_name}.so': 'qtbase/lib',
+            # f'libQt6Xml_{arch_name}.so': 'qtbase/lib',
 
-            # f'libplugins_bearer_qandroidbearer_{arch_name}.so': 'qtbase/plugins/bearer',
             f'libplugins_platforms_qtforandroid_{arch_name}.so': 'qtbase/plugins/platforms',
             f'libplugins_imageformats_qjpeg_{arch_name}.so': 'qtbase/plugins/imageformats',
             f'libplugins_imageformats_qico_{arch_name}.so': 'qtbase/plugins/imageformats',
@@ -81,13 +83,18 @@ class Qt6Recipe(BootstrapNDKRecipe):
             f'libqml_QtQml_Models_modelsplugin_{arch_name}.so': 'qtbase/qml/QtQml/Models',
             f'libqml_QtQuick_Window_quickwindowplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Window',
             f'libqml_QtQuick_Layouts_qquicklayoutsplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Layouts',
+            f'libqml_QtQuick_Dialogs_qtquickdialogsplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Dialogs',
+            f'libqml_QtQuick_Dialogs_quickimpl_qtquickdialogs2quickimplplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Dialogs/quickimpl',
             f'libqml_QtQuick_Shapes_qmlshapesplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Shapes',
             f'libqml_QtQuick_qtquick2plugin_{arch_name}.so': 'qtbase/qml/QtQuick',
             f'libqml_QtQuick_LocalStorage_qmllocalstorageplugin_{arch_name}.so': 'qtbase/qml/QtQuick/LocalStorage',
             f'libqml_QtQuick_Templates_qtquicktemplates2plugin_{arch_name}.so': 'qtbase/qml/QtQuick/Templates',
             f'libqml_QtQuick_Controls_qtquickcontrols2plugin_{arch_name}.so': 'qtbase/qml/QtQuick/Controls',
+            f'libqml_QtQuick_Controls_impl_qtquickcontrols2implplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Controls/impl',
             f'libqml_QtQuick_Controls_Material_qtquickcontrols2materialstyleplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Controls/Material',
             f'libqml_QtQuick_Controls_Material_impl_qtquickcontrols2materialstyleimplplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Controls/Material/impl',
+            f'libqml_QtQuick_Controls_Basic_qtquickcontrols2basicstyleplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Controls/Basic',
+            f'libqml_QtQuick_Controls_Basic_impl_qtquickcontrols2basicstyleimplplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Controls/Basic/impl',
             f'libqml_QtMultimedia_quickmultimediaplugin_{arch_name}.so': 'qtbase/qml/QtMultimedia',
         }
 
@@ -103,10 +110,6 @@ class Qt6Recipe(BootstrapNDKRecipe):
         env['QT_INSTALL_PATH'] = join(build_dir, 'install')
         env['QT_EXT_PATH'] = join(self.ctx.libs_dir, 'bin')
         return env
-
-    # remove me
-    # def should_build(self, arch):
-    #     return True
 
     def build_arch(self, arch):
         super().build_arch(arch)
@@ -153,7 +156,6 @@ class Qt6Recipe(BootstrapNDKRecipe):
             openssl = Recipe.get_recipe('openssl', self.ctx)
             configure = configure.bake('-ssl', '-openssl-runtime')
             configure = configure.bake('OPENSSL_INCLUDE_DIR=' + join(openssl.get_build_dir(arch.arch), 'include'))
-            # configure = configure.bake('OPENSSL_LIBDIR=' + openssl.get_build_dir(arch.arch))
             configure = configure.bake('OPENSSL_LIBS=%s' % openssl.link_libs_flags().strip())
 
             # doesn't seem to have an effect:
@@ -170,8 +172,6 @@ class Qt6Recipe(BootstrapNDKRecipe):
             x.ctx = self.ctx
             env['LD_LIBRARY_PATH'] = join(x.get_install_dir(), 'lib')
             configure = configure.bake('-DQT_HOST_PATH=%s' % x.get_install_dir())
-
-            info(str(configure))
 
             shprint(configure, _tail=50, _env=env, _critical=True)
 
