@@ -16,15 +16,13 @@ class PyQt6Recipe(Recipe):
 
     depends = ['qt6', 'pyjnius', 'setuptools', 'pyqt6sip', 'hostpython3', 'pyqt_builder']
 
-    # BINDINGS = ['Qt', 'QtCore', 'QtNetwork', 'QtGui', 'QtQml', 'QtQuick', 'QtAndroidExtras']
-    BINDINGS = ['QtCore', 'QtNetwork', 'QtGui', 'QtQml', 'QtQuick']
+    BINDINGS = ['QtCore', 'QtNetwork', 'QtGui', 'QtQml', 'QtQuick', 'QtMultimedia']
 
     def get_recipe_env(self, arch):
         env = super().get_recipe_env(arch)
 
         recipe = self.get_recipe('hostqt6', self.ctx)
         env['LD_LIBRARY_PATH'] = join(recipe.get_install_dir(), 'lib')
-        # env['HOSTQT_PATH'] = join(recipe.get_install_dir(), 'bin')
 
         recipe = self.get_recipe('qt6', self.ctx)
         qt6_env = recipe.get_recipe_env(arch)
