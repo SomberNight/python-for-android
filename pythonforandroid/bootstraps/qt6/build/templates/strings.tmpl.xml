@@ -9,6 +9,6 @@
     <string name="unsupported_android_version">Unsupported Android version.</string>
     <string name="use_local_qt_libs">1</string>
     <string name="bundle_local_qt_libs">1</string>
-    <string name="system_libs_prefix"></string>
-    <string name="static_init_classes">org.kivy.android.PythonActivityInit</string>
+    <string name="system_libs_prefix"/>
+    <string name="static_init_classes">org.qtproject.qt.android.multimedia.QtAudioDeviceManager:org.qtproject.qt.android.multimedia.QtMultimediaUtils:org.kivy.android.PythonActivityInit</string>
 </resources>

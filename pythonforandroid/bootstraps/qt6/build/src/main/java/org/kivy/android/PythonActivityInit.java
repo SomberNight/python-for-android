@@ -34,7 +34,7 @@ public class PythonActivityInit {
 
         // QtMultimediaUtils doesn't get initialized with the activity instance (?)
         // force it here.
-        QtMultimediaUtils.setContext(mActivity);
+        // QtMultimediaUtils.setContext(mActivity);
     }
 
     public void setContext(Context context) {

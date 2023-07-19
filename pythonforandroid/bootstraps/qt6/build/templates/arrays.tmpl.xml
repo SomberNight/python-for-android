@@ -5,11 +5,15 @@
         <item>{{ arch }};libplugins_bearer_qandroidbearer_{{ arch }}.so:libplugins_platforms_qtforandroid_{{ arch }}.so</item>
         -->
         <item>{{ arch }};libplugins_platforms_qtforandroid_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_networkinformation_qandroidnetworkinformation_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_tls_qopensslbackend_{{ arch }}.so</item>
         <item>{{ arch }};libplugins_multimedia_androidmediaplugin_{{ arch }}.so</item>
         <item>{{ arch }};libQt6MultimediaQuick_{{ arch }}.so</item>
 
+        <!--
+        <item>{{ arch }};libplugins_networkinformation_qandroidnetworkinformation_{{ arch }}.so</item>
+        <item>{{ arch }};libplugins_tls_qopensslbackend_{{ arch }}.so</item>
+        -->
+
+        <!--
         <item>{{ arch }};libplugins_imageformats_qgif_{{ arch }}.so</item>
         <item>{{ arch }};libplugins_imageformats_qico_{{ arch }}.so</item>
         <item>{{ arch }};libplugins_imageformats_qjpeg_{{ arch }}.so</item>
@@ -19,6 +23,7 @@
         <item>{{ arch }};libplugins_imageformats_qicns_{{ arch }}.so</item>
         <item>{{ arch }};libplugins_imageformats_qwbmp_{{ arch }}.so</item>
         <item>{{ arch }};libplugins_imageformats_qsvg_{{ arch }}.so</item>
+        -->
 
         <!--
         <item>{{ arch }};libplugins_qmltooling_qmldbg_preview_{{ arch }}.so</item>

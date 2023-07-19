@@ -91,14 +91,14 @@
             older apps provide the main library as the last bundled library; look for this if the main library isn't provided
             <meta-data android:name="android.app.lib_name" android:value="main"/>
             -->
-            <meta-data android:name="android.app.repository" android:value="default"/>
+<!--             <meta-data android:name="android.app.repository" android:value="default"/> -->
 <!--            <meta-data android:name="android.app.qt_libs_resource_id" android:resource="@array/qt_libs"/>
             <meta-data android:name="android.app.bundled_libs_resource_id" android:resource="@array/bundled_libs"/>-->
-            <meta-data android:name="android.app.bundle_local_qt_libs" android:value="1"/>
+<!--             <meta-data android:name="android.app.bundle_local_qt_libs" android:value="1"/> -->
             <!--<meta-data android:name="android.app.bundled_in_assets_resource_id" android:resource="@array/bundled_in_assets"/> -->
-            <meta-data android:name="android.app.libs_prefix" android:value="/data/local/tmp/qt/"/>
+<!--             <meta-data android:name="android.app.libs_prefix" android:value="/data/local/tmp/qt/"/> -->
 <!--            <meta-data android:name="android.app.load_local_libs_resource_id" android:resource="@array/load_local_libs"/>-->
-            <meta-data android:name="android.app.load_local_jars" android:value="jar/QtAndroid.jar:jar/QtAndroid-bundled.jar:jar/QtAndroidBearer.jar:jar/QtAndroidBearer-bundled.jar"/>
+<!--             <meta-data android:name="android.app.load_local_jars" android:value="jar/QtAndroid.jar:jar/QtAndroid-bundled.jar:jar/QtAndroidBearer.jar:jar/QtAndroidBearer-bundled.jar"/> -->
 
             <meta-data android:name="android.app.background_running" android:value="false"/>
             <meta-data android:name="android.app.auto_screen_scale_factor" android:value="false"/>
