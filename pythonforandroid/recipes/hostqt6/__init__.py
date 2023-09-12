@@ -12,14 +12,12 @@ from pythonforandroid.recipes.qt6 import Qt6Recipe
 
 
 class HostQt6Recipe(Recipe):
-    r = Qt6Recipe()
-    info(r.version)
-    info(r.url)
     name = 'hostqt6'
-    # version = Qt6Recipe.version #'6.4.3'
-    version = '6.4.3'
-    # url = Qt6Recipe.url #'https://download.qt.io/archive/qt/6.4/{version}/single/qt-everywhere-src-{version}.zip'
-    url = 'https://download.qt.io/archive/qt/6.4/{version}/single/qt-everywhere-src-{version}.zip'
+
+    # use same sources as target qt6
+    qt6recipe = Qt6Recipe()
+    version = qt6recipe.version
+    url = qt6recipe.url
 
     build_subdir = 'native-build'
 
@@ -30,15 +28,9 @@ class HostQt6Recipe(Recipe):
         return env
 
     def should_build(self, arch):
-        # if Path(self.python_exe).exists():
-        #     # no need to build, but we must set hostpython for our Context
-        #     self.ctx.hostpython = self.python_exe
-        #     return False
         return not isfile(join(self.get_install_dir(), 'bin', 'qmake'))
 
     def get_build_container_dir(self, arch=None):
-        # choices = self.check_recipe_choices()
-        # dir_name = '-'.join([self.name] + choices)
         return join(self.ctx.build_dir, 'other_builds', self.name)
 
     def get_build_dir(self, arch=None):
@@ -64,10 +56,6 @@ class HostQt6Recipe(Recipe):
             info("compiling host qt6 from sources")
             debug("environment: {}".format(env))
 
-            # wtf
-            shprint(sh.Command('dos2unix'), 'configure')
-            shprint(sh.Command('dos2unix'), 'qtbase/configure')
-
             configure = sh.Command('./configure')
             # options?
             shprint(configure, '--help', _env=env, _tail=50, _critical=True)
@@ -80,7 +68,7 @@ class HostQt6Recipe(Recipe):
             configure = configure.bake('-nomake', 'examples')
             configure = configure.bake('-make', 'tools')
             configure = configure.bake('-submodules', ','.join(
-                ['qtbase', 'qttools']))
+                ['qtbase', 'qttools', 'qtmultimedia', 'qtquick3d']))
             configure = configure.bake('-skip', ','.join(
                 ['qtactiveqt']))
 

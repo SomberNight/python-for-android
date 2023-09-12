@@ -166,7 +166,7 @@ public class PythonActivity extends QtActivity {
     protected void onNewIntent(Intent intent) {
         if ( this.newIntentListeners == null )
             return;
-        this.onResume();
+        // this.onResume();
         synchronized ( this.newIntentListeners ) {
             Iterator<NewIntentListener> iterator = this.newIntentListeners.iterator();
             while ( iterator.hasNext() ) {

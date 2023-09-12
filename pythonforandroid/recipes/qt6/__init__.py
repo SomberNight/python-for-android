@@ -8,7 +8,7 @@ import sh
 class Qt6Recipe(BootstrapNDKRecipe):
     name = 'qt6'
     version = '6.4.3'
-    url = 'https://download.qt.io/archive/qt/6.4/{version}/single/qt-everywhere-src-{version}.zip'
+    url = 'https://download.qt.io/archive/qt/6.4/{version}/single/qt-everywhere-src-{version}.tar.xz'
     dir_name = 'qt6'
 
     built_libraries = {'dummy': '.'}
@@ -65,18 +65,19 @@ class Qt6Recipe(BootstrapNDKRecipe):
             f'libplugins_multimedia_androidmediaplugin_{arch_name}.so': 'qtbase/plugins/multimedia',
             f'libplugins_networkinformation_qandroidnetworkinformation_{arch_name}.so': 'qtbase/plugins/networkinformation',
             f'libplugins_tls_qopensslbackend_{arch_name}.so': 'qtbase/plugins/tls',
+            f'libplugins_tls_qcertonlybackend_{arch_name}.so': 'qtbase/plugins/tls',
 
-            # f'libplugins_qmltooling_qmldbg_preview_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
-            # f'libplugins_qmltooling_qmldbg_native_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
-            # f'libplugins_qmltooling_qmldbg_debugger_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
-            # f'libplugins_qmltooling_qmldbg_local_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
-            # f'libplugins_qmltooling_qmldbg_messages_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
-            # f'libplugins_qmltooling_qmldbg_quickprofiler_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
-            # f'libplugins_qmltooling_qmldbg_nativedebugger_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
-            # f'libplugins_qmltooling_qmldbg_server_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
-            # f'libplugins_qmltooling_qmldbg_tcp_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
-            # f'libplugins_qmltooling_qmldbg_inspector_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
-            # f'libplugins_qmltooling_qmldbg_profiler_{arch_name}.so': 'qtdeclarative/plugins/qmltooling',
+            f'libplugins_qmltooling_qmldbg_preview_{arch_name}.so': 'qtbase/plugins/qmltooling',
+            f'libplugins_qmltooling_qmldbg_native_{arch_name}.so': 'qtbase/plugins/qmltooling',
+            f'libplugins_qmltooling_qmldbg_debugger_{arch_name}.so': 'qtbase/plugins/qmltooling',
+            f'libplugins_qmltooling_qmldbg_local_{arch_name}.so': 'qtbase/plugins/qmltooling',
+            f'libplugins_qmltooling_qmldbg_messages_{arch_name}.so': 'qtbase/plugins/qmltooling',
+            f'libplugins_qmltooling_qmldbg_quickprofiler_{arch_name}.so': 'qtbase/plugins/qmltooling',
+            f'libplugins_qmltooling_qmldbg_nativedebugger_{arch_name}.so': 'qtbase/plugins/qmltooling',
+            f'libplugins_qmltooling_qmldbg_server_{arch_name}.so': 'qtbase/plugins/qmltooling',
+            f'libplugins_qmltooling_qmldbg_tcp_{arch_name}.so': 'qtbase/plugins/qmltooling',
+            f'libplugins_qmltooling_qmldbg_inspector_{arch_name}.so': 'qtbase/plugins/qmltooling',
+            f'libplugins_qmltooling_qmldbg_profiler_{arch_name}.so': 'qtbase/plugins/qmltooling',
 
             f'libqml_QtQml_qmlplugin_{arch_name}.so': 'qtbase/qml/QtQml',
             f'libqml_QtQml_WorkerScript_workerscriptplugin_{arch_name}.so': 'qtbase/qml/QtQml/WorkerScript',
@@ -128,10 +129,6 @@ class Qt6Recipe(BootstrapNDKRecipe):
             info("NDK sysroot: %s" % ndk_sysroot)
             info("libdir: %s" % join(build_dir, 'obj', 'local', arch.arch))
 
-            # wtf
-            shprint(sh.Command('dos2unix'), 'configure')
-            shprint(sh.Command('dos2unix'), 'qtbase/configure')
-
             configure = sh.Command('./configure')
             # options?
             shprint(configure, '--help', _env=env, _tail=50, _critical=True)
@@ -150,7 +147,8 @@ class Qt6Recipe(BootstrapNDKRecipe):
             configure = configure.bake('-submodules', ','.join(
                 ['qtbase', 'qtdeclarative', 'qtimageformats', 'qtmultimedia']))
             configure = configure.bake('-skip', ','.join(
-                ['qtquick3d', 'qtquick3dphysics', 'qtactiveqt']))
+                # ['qtquick3d', 'qtquick3dphysics', 'qtactiveqt']))
+                ['qtactiveqt']))
 
             # openssl
             openssl = Recipe.get_recipe('openssl', self.ctx)

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="load_local_libs">
-        <!--
-        <item>{{ arch }};libplugins_bearer_qandroidbearer_{{ arch }}.so:libplugins_platforms_qtforandroid_{{ arch }}.so</item>
-        -->
         <item>{{ arch }};libplugins_platforms_qtforandroid_{{ arch }}.so</item>
         <item>{{ arch }};libplugins_multimedia_androidmediaplugin_{{ arch }}.so</item>
         <item>{{ arch }};libQt6MultimediaQuick_{{ arch }}.so</item>
@@ -11,18 +8,6 @@
         <!--
         <item>{{ arch }};libplugins_networkinformation_qandroidnetworkinformation_{{ arch }}.so</item>
         <item>{{ arch }};libplugins_tls_qopensslbackend_{{ arch }}.so</item>
-        -->
-
-        <!--
-        <item>{{ arch }};libplugins_imageformats_qgif_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_imageformats_qico_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_imageformats_qjpeg_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_imageformats_qtga_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_imageformats_qtiff_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_imageformats_qwebp_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_imageformats_qicns_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_imageformats_qwbmp_{{ arch }}.so</item>
-        <item>{{ arch }};libplugins_imageformats_qsvg_{{ arch }}.so</item>
         -->
 
         <!--

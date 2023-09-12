@@ -240,7 +240,9 @@ int main(int argc, char *argv[]) {
       "sys.stdout = sys.stderr = LogFile()\n"
       "print('Android path', sys.path)\n"
       "import os\n"
-      "print('os.environ is', os.environ)\n"
+      "print('os.environ is:')\n"
+      "for k, v in os.environ.items():\n"
+      "  print(f'  {k}={v}')\n"
       "print('Android kivy bootstrap done. __name__ is', __name__)");
 
 #if PY_MAJOR_VERSION < 3
