@@ -7,8 +7,10 @@ import sh
 
 class Qt6Recipe(BootstrapNDKRecipe):
     name = 'qt6'
-    version = '6.4.3'
-    url = 'https://download.qt.io/archive/qt/6.4/{version}/single/qt-everywhere-src-{version}.tar.xz'
+    # version = '6.4.3'
+    # url = 'https://download.qt.io/archive/qt/6.4/{version}/single/qt-everywhere-src-{version}.tar.xz'
+    version = '6.5.3'
+    url = 'https://download.qt.io/archive/qt/6.5/{version}/single/qt-everywhere-src-{version}.tar.xz'
     dir_name = 'qt6'
 
     built_libraries = {'dummy': '.'}
@@ -79,7 +81,7 @@ class Qt6Recipe(BootstrapNDKRecipe):
             f'libplugins_qmltooling_qmldbg_inspector_{arch_name}.so': 'qtbase/plugins/qmltooling',
             f'libplugins_qmltooling_qmldbg_profiler_{arch_name}.so': 'qtbase/plugins/qmltooling',
 
-            f'libqml_QtQml_qmlplugin_{arch_name}.so': 'qtbase/qml/QtQml',
+            f'libqml_QtQml_qmlmetaplugin_{arch_name}.so': 'qtbase/qml/QtQml',
             f'libqml_QtQml_WorkerScript_workerscriptplugin_{arch_name}.so': 'qtbase/qml/QtQml/WorkerScript',
             f'libqml_QtQml_Models_modelsplugin_{arch_name}.so': 'qtbase/qml/QtQml/Models',
             f'libqml_QtQuick_Window_quickwindowplugin_{arch_name}.so': 'qtbase/qml/QtQuick/Window',
@@ -147,7 +149,6 @@ class Qt6Recipe(BootstrapNDKRecipe):
             configure = configure.bake('-submodules', ','.join(
                 ['qtbase', 'qtdeclarative', 'qtimageformats', 'qtmultimedia']))
             configure = configure.bake('-skip', ','.join(
-                # ['qtquick3d', 'qtquick3dphysics', 'qtactiveqt']))
                 ['qtactiveqt']))
 
             # openssl
