@@ -126,6 +126,7 @@ android {
 
     aaptOptions {
         noCompress "tflite", 'rcc'
+        additionalParameters "--custom-package","org.electrum.electrum.res","--java","src/main/java"
     }
 
 }
