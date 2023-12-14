@@ -2,7 +2,7 @@ from pythonforandroid.recipe import PythonRecipe
 
 
 class PyQt6SipRecipe(PythonRecipe):
-    version = '13.5.1'
+    version = '13.6.0'
     url = "https://pypi.python.org/packages/source/P/PyQt6_sip/PyQt6_sip-{version}.tar.gz"
     name = 'pyqt6sip'
 
