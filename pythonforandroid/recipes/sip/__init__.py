@@ -1,12 +1,12 @@
-from pythonforandroid.recipe import CompiledComponentsPythonRecipe
+from pythonforandroid.recipe import PythonRecipe
 
 
-class SipRecipe(CompiledComponentsPythonRecipe):
-    version = '6.7.9'
+class SipRecipe(PythonRecipe):
+    version = '6.8.1'
     url = "https://pypi.python.org/packages/source/s/sip/sip-{version}.tar.gz"
     name = 'sip'
 
-    depends = ['setuptools', 'packaging', 'tomli', 'ply']
+    depends = ['setuptools', 'packaging', 'tomli']
 
     call_hostpython_via_targetpython = False
     install_in_hostpython = True

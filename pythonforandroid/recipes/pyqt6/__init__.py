@@ -10,7 +10,7 @@ from pythonforandroid.toolchain import current_directory
 
 
 class PyQt6Recipe(Recipe):
-    version = '6.4.2'
+    version = '6.6.1'
     url = "https://pypi.python.org/packages/source/P/PyQt6/PyQt6-{version}.tar.gz"
     name = 'pyqt6'
 

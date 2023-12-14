@@ -9,8 +9,8 @@ class Qt6Recipe(BootstrapNDKRecipe):
     name = 'qt6'
     # version = '6.4.3'
     # url = 'https://download.qt.io/archive/qt/6.4/{version}/single/qt-everywhere-src-{version}.tar.xz'
-    version = '6.5.3'
-    url = 'https://download.qt.io/archive/qt/6.5/{version}/single/qt-everywhere-src-{version}.tar.xz'
+    version = '6.6.1'
+    url = 'https://download.qt.io/archive/qt/6.6/{version}/single/qt-everywhere-src-{version}.tar.xz'
     dir_name = 'qt6'
 
     built_libraries = {'dummy': '.'}
