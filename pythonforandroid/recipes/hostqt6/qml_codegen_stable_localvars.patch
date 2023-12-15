@@ -1,0 +1,62 @@
+--- a/qtdeclarative/src/qmlcompiler/qqmljscodegenerator.cpp	2023-12-15 13:05:45.700077203 +0000
++++ b/qtdeclarative/src/qmlcompiler/qqmljscodegenerator.cpp	2023-12-15 13:33:05.829305331 +0000
+@@ -145,16 +145,27 @@
+ 
+         const bool registerIsArgument = isArgument(registerIndex);
+ 
+-        for (auto registerTypeIt = registerTypes.constBegin(), end = registerTypes.constEnd();
+-             registerTypeIt != end; ++registerTypeIt) {
++        QMap <QString, QQmlJSScope::ConstPtr> rmap;
++        
++        for (auto registerTypeIt2 = registerTypes.constBegin(), end = registerTypes.constEnd();
++             registerTypeIt2 != end; ++registerTypeIt2) {
+ 
+-            const QQmlJSScope::ConstPtr storedType = registerTypeIt.key();
++            const QQmlJSScope::ConstPtr storedType2 = registerTypeIt2.key();
++            rmap.insert(registerTypeIt2.value(), storedType2);
++        }
++        
++        for (auto registerTypeIt = rmap.constBegin(), end = rmap.constEnd();
++             registerTypeIt != end; ++registerTypeIt) {
+ 
+-            if (generatedVariables.hasSeen(registerTypeIt.value()))
++            const QQmlJSScope::ConstPtr storedType = registerTypeIt.value();
++        
++            if (generatedVariables.hasSeen(registerTypeIt.key()))
+                 continue;
+ 
+             result.code += storedType->internalName();
+-
++            
++            qCDebug(lcAotCompiler) << storedType->internalName() << registerTypeIt.key();
++            
+             const bool isPointer
+                     = (storedType->accessSemantics() == QQmlJSScope::AccessSemantics::Reference);
+             if (isPointer)
+@@ -166,7 +177,7 @@
+                     && !m_typeResolver->registerIsStoredIn(
+                         function->registerTypes[registerIndex - firstRegisterIndex()],
+                         m_typeResolver->voidType())) {
+-                result.code += registerTypeIt.value() + u" = "_s;
++                result.code += registerTypeIt.key() + u" = "_s;
+                 result.code += conversion(m_typeResolver->voidType(), storedType, QString());
+             } else if (registerIsArgument && m_typeResolver->registerIsStoredIn(
+                            argumentType(registerIndex), storedType)) {
+@@ -187,7 +198,7 @@
+                     result.code += u'&';
+                 }
+ 
+-                result.code += registerTypeIt.value() + u" = "_s;
++                result.code += registerTypeIt.key() + u" = "_s;
+ 
+                 const QString originalValue = u"*static_cast<"_s + castTargetName(original)
+                         + u"*>(argumentsPtr["_s + QString::number(argumentIndex) + u"])"_s;
+@@ -197,7 +208,7 @@
+                 else
+                     result.code += originalValue;
+             } else {
+-                result.code += registerTypeIt.value();
++                result.code += registerTypeIt.key();
+             }
+             result.code += u";\n"_s;
+         }

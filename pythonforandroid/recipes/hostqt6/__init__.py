@@ -19,6 +19,8 @@ class HostQt6Recipe(Recipe):
     version = qt6recipe.version
     url = qt6recipe.url
 
+    patches = ['qml_codegen_stable_localvars.patch']
+
     build_subdir = 'native-build'
 
     built_libraries = {}
