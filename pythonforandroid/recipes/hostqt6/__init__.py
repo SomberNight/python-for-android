@@ -19,7 +19,10 @@ class HostQt6Recipe(Recipe):
     version = qt6recipe.version
     url = qt6recipe.url
 
-    patches = ['qml_codegen_stable_localvars.patch']
+    patches = [
+        'qml_codegen_stable_localvars.patch',
+        'consistent_shader_order_for_qsb.patch',  # see https://bugreports.qt.io/browse/QTBUG-101923
+    ]
 
     build_subdir = 'native-build'
 
