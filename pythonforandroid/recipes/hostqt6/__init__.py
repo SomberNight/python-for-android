@@ -21,7 +21,8 @@ class HostQt6Recipe(Recipe):
 
     patches = [
         'qml_codegen_stable_localvars.patch',
-        'consistent_shader_order_for_qsb.patch',  # see https://bugreports.qt.io/browse/QTBUG-101923
+        'consistent_shader_order_for_qsb1.patch',  # see https://bugreports.qt.io/browse/QTBUG-101923
+        'consistent_shader_order_for_qsb2.patch',  # follow-up to above, from https://codereview.qt-project.org/c/qt/qtbase/+/427477
     ]
 
     build_subdir = 'native-build'
