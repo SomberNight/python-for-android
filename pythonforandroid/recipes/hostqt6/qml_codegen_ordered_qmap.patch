@@ -1,0 +1,28 @@
+--- a/qtdeclarative/src/qmlcompiler/qqmljscodegenerator_p.h	2023-12-16 01:49:12.000000000 +0000
++++ b/qtdeclarative/src/qmlcompiler/qqmljscodegenerator_p.h	2023-12-16 02:08:10.022881400 +0000
+@@ -317,6 +317,16 @@
+         {
+             return !(lhs == rhs);
+         }
++
++        friend bool operator<(
++                const RegisterVariablesKey &lhs, const RegisterVariablesKey &rhs) noexcept
++        {
++            if (lhs.registerIndex < rhs.registerIndex)
++                return true;
++
++            if (lhs.registerIndex == rhs.registerIndex)
++                return lhs.internalName < rhs.internalName;
++        }
+     };
+
+     struct RegisterVariablesValue
+@@ -326,7 +336,7 @@
+         int numTracked = 0;
+     };
+
+-    QHash<RegisterVariablesKey, RegisterVariablesValue> m_registerVariables;
++    QMap<RegisterVariablesKey, RegisterVariablesValue> m_registerVariables;
+ };
+
+ QT_END_NAMESPACE
