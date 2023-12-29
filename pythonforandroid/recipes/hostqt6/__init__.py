@@ -47,7 +47,7 @@ class HostQt6Recipe(Recipe):
         return join(self.get_build_container_dir(), self.build_subdir)
 
     def get_install_dir(self):
-        return join(self.get_build_dir(), 'install')
+        return join(self.get_build_container_dir(), 'install')
 
     def build_arch(self, arch):
         # super().build_arch(arch)
@@ -67,7 +67,6 @@ class HostQt6Recipe(Recipe):
             shprint(configure, '--help', _env=env, _tail=50, _critical=True)
 
             configure = configure.bake('-opensource', '-confirm-license', '-disable-rpath')
-            # configure = configure.bake('-extprefix', self.ctx.libs_dir)
             configure = configure.bake('-prefix', install_dir)
 
             configure = configure.bake('-nomake', 'tests')
@@ -84,6 +83,9 @@ class HostQt6Recipe(Recipe):
 
             shprint(sh.make, '-j' + str(cpu_count()), _critical=True)
             shprint(sh.make, '-j' + str(cpu_count()), 'install', _critical=True)
+
+        # remove huge build tree
+        shprint(sh.rm, '-rf', self.get_build_dir())
 
 
 recipe = HostQt6Recipe()
