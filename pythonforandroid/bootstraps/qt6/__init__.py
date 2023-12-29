@@ -24,14 +24,35 @@ class Qt6Bootstrap(Bootstrap):
         info_main('# Creating Android project from build and {} bootstrap'.format(
             self.name))
 
-        info('This currently just copies the build stuff straight from the build dir.')
         shprint(sh.rm, '-rf', self.dist_dir)
-        shprint(sh.cp, '-r', self.build_dir, self.dist_dir)
+        shprint(sh.mkdir, '-p', self.dist_dir)
+
+        file_include_patterns = [
+            ('*', False),
+            ('jni/*', False),
+            ('jni/application/**', True),
+            ('src/**', True),
+            ('templates/**', True),
+            ('gradle/**', True),
+            ('**/*.so', True),
+            ('**/qmldir', True),
+        ]
+
+        with current_directory(self.dist_dir):
+            with open('bootstrap_distfiles.txt', 'w') as fileh:
+                for pattern, recurse in file_include_patterns:
+                    filenames = glob.glob(pattern, root_dir=self.build_dir, recursive=recurse)
+                    for filename in filenames:
+                        fileh.write(f'{filename}\n')
+                    info(f'pattern {pattern}, recurse={recurse} yielded {len(filenames)} items')
+
+            shprint(sh.rsync, '--files-from=bootstrap_distfiles.txt',
+                self.build_dir, '.')
+
         with current_directory(self.dist_dir):
             with open('local.properties', 'w') as fileh:
                 fileh.write('sdk.dir={}'.format(self.ctx.sdk_dir))
 
-        with current_directory(self.dist_dir):
             info('Copying python distribution')
 
             # self.distribute_aars(arch)
