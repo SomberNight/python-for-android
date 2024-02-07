@@ -151,25 +151,28 @@ public class PythonActivity extends QtActivity {
     private List<NewIntentListener> newIntentListeners = null;
 
     public void registerNewIntentListener(NewIntentListener listener) {
-        if ( this.newIntentListeners == null )
-            this.newIntentListeners = Collections.synchronizedList(new ArrayList<NewIntentListener>());
-        this.newIntentListeners.add(listener);
+        if (this.newIntentListeners == null)
+            this.newIntentListeners = new ArrayList<NewIntentListener>();
+        synchronized (this.newIntentListeners) {
+            this.newIntentListeners.add(listener);
+        }
     }
 
     public void unregisterNewIntentListener(NewIntentListener listener) {
-        if ( this.newIntentListeners == null )
+        if (this.newIntentListeners == null)
             return;
-        this.newIntentListeners.remove(listener);
+        synchronized (this.newIntentListeners) {
+            this.newIntentListeners.remove(listener);
+        }
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
-        if ( this.newIntentListeners == null )
+        if (this.newIntentListeners == null)
             return;
-        // this.onResume();
-        synchronized ( this.newIntentListeners ) {
+        synchronized (this.newIntentListeners) {
             Iterator<NewIntentListener> iterator = this.newIntentListeners.iterator();
-            while ( iterator.hasNext() ) {
+            while (iterator.hasNext()) {
                 (iterator.next()).onNewIntent(intent);
             }
         }
@@ -186,25 +189,29 @@ public class PythonActivity extends QtActivity {
     private List<ActivityResultListener> activityResultListeners = null;
 
     public void registerActivityResultListener(ActivityResultListener listener) {
-        if ( this.activityResultListeners == null )
-            this.activityResultListeners = Collections.synchronizedList(new ArrayList<ActivityResultListener>());
-        this.activityResultListeners.add(listener);
+        if (this.activityResultListeners == null)
+            this.activityResultListeners = new ArrayList<ActivityResultListener>();
+        synchronized (this.activityResultListeners) {
+            this.activityResultListeners.add(listener);
+        }
     }
 
     public void unregisterActivityResultListener(ActivityResultListener listener) {
-        if ( this.activityResultListeners == null )
+        if (this.activityResultListeners == null)
             return;
-        this.activityResultListeners.remove(listener);
+        synchronized (this.activityResultListeners) {
+            this.activityResultListeners.remove(listener);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if ( this.activityResultListeners == null )
+        if (this.activityResultListeners == null)
             return;
-        this.onResume();
-        synchronized ( this.activityResultListeners ) {
+        // this.onResume();
+        synchronized (this.activityResultListeners) {
             Iterator<ActivityResultListener> iterator = this.activityResultListeners.iterator();
-            while ( iterator.hasNext() )
+            while (iterator.hasNext())
                 (iterator.next()).onActivityResult(requestCode, resultCode, intent);
         }
     }
