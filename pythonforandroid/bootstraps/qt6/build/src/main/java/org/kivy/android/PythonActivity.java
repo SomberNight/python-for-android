@@ -130,11 +130,14 @@ public class PythonActivity extends QtActivity {
                 } else {
                     Log.v(TAG, "UnSetting Secure Window");
                     window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
-                    if (ViewCompat.isAttachedToWindow(window.getDecorView())) {
+                    // The below forces a redraw of the window/view, which is needed on some phones
+                    // to actually clear the flag. However on some other phones, it crashes the app...
+                    // see https://github.com/spesmilo/electrum/issues/8522
+                    /*if (ViewCompat.isAttachedToWindow(window.getDecorView())) {
                         WindowManager wm = this.mActivity.getWindowManager();
                         wm.removeViewImmediate(window.getDecorView());
                         wm.addView(window.getDecorView(), window.getAttributes());
-                    }
+                    }*/
                 }
             }
         }._initialize(this, secure));
