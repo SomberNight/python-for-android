@@ -348,7 +348,13 @@ class Python3Recipe(TargetPythonRecipe):
         '''
         args = [self.ctx.hostpython]
         # don't use -O/-OO, to enable python __debug__, to have asserts enabled
-        args += ['-m', 'compileall', '-b', '-f', dir]
+        args += [
+            '-m', 'compileall',
+            '-b',
+            '-s', dir,  # for reproducible builds, do not leak paths into pyc
+            '-f',
+            dir,
+        ]
         subprocess.call(args)
 
     def create_python_bundle(self, dirn, arch):
