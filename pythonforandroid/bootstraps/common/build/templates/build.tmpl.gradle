@@ -129,6 +129,13 @@ android {
         additionalParameters "--custom-package","org.electrum.electrum.res","--java","src/main/java"
     }
 
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs.
+        includeInApk = false
+        // Disables dependency metadata when building Android App Bundles.
+        includeInBundle = false
+    }
+
 }
 
 dependencies {
