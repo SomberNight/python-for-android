@@ -71,7 +71,10 @@ class Python3Recipe(TargetPythonRecipe):
         # Python 3.8.1 & 3.9.X
         ('patches/py3.8.1.patch', version_starts_with("3.8")),
         ('patches/py3.8.1.patch', version_starts_with("3.9")),
-        ('patches/py3.8.1.patch', version_starts_with("3.10"))
+        ('patches/py3.8.1.patch', version_starts_with("3.10")),
+
+        ('patches/py3.10_reproducible-pyc.diff', version_starts_with("3.10")),
+        ('patches/py3.10_reproducible-marshal_flagref.patch', version_starts_with("3.10")),
     ]
 
     if shutil.which('lld') is not None:

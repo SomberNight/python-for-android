@@ -6,6 +6,7 @@ from pathlib import Path
 from os.path import join
 
 from pythonforandroid.logger import shprint
+from pythonforandroid.patching import version_starts_with
 from pythonforandroid.recipe import Recipe
 from pythonforandroid.util import (
     BuildInterruptingException,
@@ -46,7 +47,11 @@ class HostPython3Recipe(Recipe):
     '''The default url to download our host python recipe. This url will
     change depending on the python version set in attribute :attr:`version`.'''
 
-    patches = ['patches/pyconfig_detection.patch']
+    patches = [
+        'patches/pyconfig_detection.patch',
+        ('patches/py3.10_reproducible-pyc.diff', version_starts_with("3.10")),
+        ('patches/py3.10_reproducible-marshal_flagref.patch', version_starts_with("3.10")),
+    ]
 
     @property
     def _exe_name(self):
