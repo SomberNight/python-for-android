@@ -1082,7 +1082,8 @@ class PythonRecipe(Recipe):
         hash_pin = any(isinstance(package, HashPinnedDependency) for package in packages)
 
         if not hash_pin:
-            warning('hostpython_prerequisites no hash pinning')
+            error(f"hostpython_prerequisites has no hash pinning for recipe={self}")
+            exit(1)
 
         with temp_directory() as tempdir:
             with open(join(tempdir, 'requirements.txt'), 'w') as reqfile:
@@ -1105,7 +1106,7 @@ class PythonRecipe(Recipe):
             ]
 
             if hash_pin:
-                pip_options.append('--require-hashes')
+                pip_options.append('--require-hashes')  # any pkg hash-pinned => *all* must be hash-pinned
 
             if pip_extra_args:
                 pip_options += pip_extra_args
