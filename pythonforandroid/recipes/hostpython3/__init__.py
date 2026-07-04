@@ -164,7 +164,7 @@ class HostPython3Recipe(Recipe):
 
         ensure_dir(self.site_root)
         self.ctx.hostpython = self.python_exe
-        if build_configured:
+        if build_configured:  #
             shprint(
                 sh.Command(self.python_exe), "-m", "ensurepip", "--root", self.site_root, "-U",
                 _env={"HOME": "/tmp"}

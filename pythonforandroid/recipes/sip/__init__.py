@@ -8,7 +8,8 @@ class SipRecipe(PyProjectRecipe):
     url = "https://pypi.python.org/packages/source/s/sip/sip-{version}.tar.gz"
     name = 'sip'
 
-    hostpython_prerequisites = ['setuptools', 'packaging']
+    hostpython_prerequisites = ["setuptools>=77", "setuptools_scm>=8"]
+    depends = ["python3", "packaging"]
 
     call_hostpython_via_targetpython = False
     install_in_hostpython = True

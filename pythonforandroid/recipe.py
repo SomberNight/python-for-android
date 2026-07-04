@@ -1107,6 +1107,7 @@ class PythonRecipe(Recipe):
 
             if hash_pin:
                 pip_options.append('--require-hashes')  # any pkg hash-pinned => *all* must be hash-pinned
+                pip_options.append('--no-build-isolation')
 
             if pip_extra_args:
                 pip_options += pip_extra_args
@@ -1351,7 +1352,7 @@ class PyProjectRecipe(PythonRecipe):
             return
 
         self.install_hostpython_prerequisites(
-            packages=self._host_recipe.pyproject_base_dependencies
+            packages=self._host_recipe.pyproject_base_dependencies  #
         )
         self.install_hostpython_prerequisites(
             packages=self.hostpython_prerequisites
@@ -1368,6 +1369,7 @@ class PyProjectRecipe(PythonRecipe):
         build_args = [
             "-m",
             "build",
+            "--no-isolation",
             "--wheel",
             "--config-setting",
             "builddir={}".format(sub_build_dir),
@@ -1393,6 +1395,7 @@ class PyProjectRecipe(PythonRecipe):
         env = self.get_hostrecipe_env(arch)
         build_args = [
             "-m", "build",
+            "--no-isolation",
             "--wheel",
             "-o", dist_dir,
             "--config-setting",
@@ -1406,6 +1409,7 @@ class PyProjectRecipe(PythonRecipe):
         pip_options = [
             'install',
             '--no-deps',
+            '--no-build-isolation',
             '--root', self._host_recipe.site_root,
             whl
         ]
