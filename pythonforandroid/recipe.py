@@ -967,7 +967,8 @@ class PythonRecipe(Recipe):
         # set correct shebang
         for file in listdir(path):
             _file = join(path, file)
-            self.patch_shebang(_file, original_bin)
+            if isfile(_file):
+                self.patch_shebang(_file, original_bin)
 
     def get_recipe_env(self, arch=None, with_flags_in_cc=True):
         if self._host_recipe is None:
@@ -977,11 +978,7 @@ class PythonRecipe(Recipe):
         # Set the LANG, this isn't usually important but is a better default
         # as it occasionally matters how Python e.g. reads files
         env['LANG'] = "en_GB.UTF-8"
-
-        # Binaries made by packages installed by pip
-        self.patch_shebangs(self._host_recipe.local_bin, self.real_hostpython_location)
         env["PATH"] = self._host_recipe.local_bin + ":" + self._host_recipe.site_bin + ":" + env["PATH"]
-
         host_env = self.get_hostrecipe_env(arch)
         env['PYTHONPATH'] = host_env["PYTHONPATH"]
 
@@ -1041,10 +1038,8 @@ class PythonRecipe(Recipe):
 
     def get_hostrecipe_env(self, arch=None):
         env = environ.copy()
-        _python_path = self._host_recipe.get_path_to_python()
-        libdir = glob.glob(join(_python_path, "build", "lib*"))
-        env['PYTHONPATH'] = self._host_recipe.site_dir + ":" + join(
-            _python_path, "Modules") + ":" + (libdir[0] if libdir else "")
+        env['PYTHONPATH'] = ''
+        env['HOME'] = '/tmp'
         return env
 
     @property
@@ -1072,8 +1067,6 @@ class PythonRecipe(Recipe):
             return
 
         default_pip_options = [
-            # Don't use sources, instead wheels
-            "--only-binary=:all:",
             # Even for hash pinning --upgrade is needed to regen __pycache__ dirs
             "--upgrade",
         ]
@@ -1101,8 +1094,6 @@ class PythonRecipe(Recipe):
             pip_options = [
                 "install",
                 "-r", join(tempdir, "requirements.txt"),
-                "--target", self._host_recipe.site_dir, "--python-version",
-                self.ctx.python_recipe.version,
             ]
 
             if hash_pin:
@@ -1114,7 +1105,6 @@ class PythonRecipe(Recipe):
             else:
                 pip_options += default_pip_options
 
-            # Use system's pip
             pip_env = self.get_hostrecipe_env()
             pip_env["HOME"] = "/tmp"
             shprint(sh.Command(self.real_hostpython_location), "-m", "pip", *pip_options, _env=pip_env)
@@ -1293,9 +1283,6 @@ class PyProjectRecipe(PythonRecipe):
     call_hostpython_via_targetpython = False
 
     def get_recipe_env(self, arch, **kwargs):
-        # Custom hostpython
-        self.ctx.python_recipe.python_exe = join(
-            self.ctx.python_recipe.get_build_dir(arch), "android-build", "python3")
         env = super().get_recipe_env(arch, **kwargs)
         build_dir = self.get_build_dir(arch)
         ensure_dir(build_dir)
@@ -1308,6 +1295,8 @@ class PyProjectRecipe(PythonRecipe):
             file.close()
 
         env["DIST_EXTRA_CONFIG"] = build_opts
+        python_recipe = Recipe.get_recipe("python3", self.ctx)
+        env["INCLUDEPY"] = python_recipe.include_root(arch.arch)
         return env
 
     def get_wheel_platform_tag(self, arch):
@@ -1357,14 +1346,11 @@ class PyProjectRecipe(PythonRecipe):
         self.install_hostpython_prerequisites(
             packages=self.hostpython_prerequisites
         )
-        self.patch_shebangs(self._host_recipe.site_bin, self.real_hostpython_location)
 
         env = self.get_recipe_env(arch, with_flags_in_cc=True)
         # make build dir separately
         sub_build_dir = join(build_dir, "p4a_android_build")
         ensure_dir(sub_build_dir)
-        # copy hostpython to built python to ensure correct selection of libs and includes
-        shprint(sh.cp, self.real_hostpython_location, self.ctx.python_recipe.python_exe)
 
         build_args = [
             "-m",
@@ -1378,7 +1364,7 @@ class PyProjectRecipe(PythonRecipe):
         with current_directory(build_dir):
             if self.install_in_targetpython:
                 shprint(
-                    sh.Command(self.ctx.python_recipe.python_exe), *build_args, _env=env
+                    sh.Command(self.real_hostpython_location), *build_args, _env=env
                 )
                 built_wheels = [realpath(whl) for whl in glob.glob("dist/*.whl")]
                 self.install_wheel(arch, built_wheels)
@@ -1527,8 +1513,6 @@ class RustCompiledComponentsRecipe(PyProjectRecipe):
         "x86": "i686-linux-android",
     }
 
-    call_hostpython_via_targetpython = False
-
     def get_recipe_env(self, arch, **kwargs):
         env = super().get_recipe_env(arch, **kwargs)
 
@@ -1567,7 +1551,7 @@ class RustCompiledComponentsRecipe(PyProjectRecipe):
         env["PATH"] = ("{hostpython_dir}:{old_path}").format(
             hostpython_dir=Recipe.get_recipe(
                 "hostpython3", self.ctx
-            ).get_path_to_python(),
+            ).local_bin,
             old_path=env["PATH"],
         )
         return env

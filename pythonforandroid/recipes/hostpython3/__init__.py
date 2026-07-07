@@ -53,12 +53,12 @@ class HostPython3Recipe(Recipe):
         '''
         if not self.version:
             raise BuildInterruptingException(HOSTPYTHON_VERSION_UNSET_MESSAGE)
-        return f'python{self.version.split(".")[0]}'
+        return "python"
 
     @property
     def python_exe(self):
         '''Returns the full path of the hostpython executable.'''
-        return join(self.get_path_to_python(), self._exe_name)
+        return join(self.local_bin, self._exe_name)
 
     @property
     def pyproject_base_dependencies(self):
@@ -106,8 +106,12 @@ class HostPython3Recipe(Recipe):
         return join(self.site_root, self.site_dir, "bin")
 
     @property
+    def local_dir(self):
+        return join(self.site_root, "usr/local/")
+
+    @property
     def local_bin(self):
-        return join(self.site_root, "usr/local/bin/")
+        return join(self.local_dir, "bin")
 
     @property
     def site_dir(self):
@@ -130,7 +134,12 @@ class HostPython3Recipe(Recipe):
         build_configured = False
         with current_directory(build_dir):
             if not Path('config.status').exists():
-                shprint(sh.Command(join(recipe_build_dir, 'configure')), _env=env)
+                shprint(
+                    sh.Command(join(recipe_build_dir, "configure")),
+                    "--prefix",
+                    self.local_dir,
+                    _env=env,
+                )
                 build_configured = True
 
         with current_directory(recipe_build_dir):
@@ -151,6 +160,10 @@ class HostPython3Recipe(Recipe):
 
             shprint(sh.make, '-j', str(cpu_count()), '-C', build_dir, _env=env)
 
+        with current_directory(build_dir):
+            shprint(sh.make, "install", _env=env)
+
+        with current_directory(recipe_build_dir):
             # make a copy of the python executable giving it the name we want,
             # because we got different python's executable names depending on
             # the fs being case-insensitive (Mac OS X, Cygwin...) or
@@ -166,8 +179,11 @@ class HostPython3Recipe(Recipe):
         self.ctx.hostpython = self.python_exe
         if build_configured:
             shprint(
-                sh.Command(self.python_exe), "-m", "ensurepip", "--root", self.site_root, "-U",
-                _env={"HOME": "/tmp"}
+                sh.Command(self.python_exe),
+                "-m",
+                "ensurepip",
+                "-U",
+                _env={"HOME": "/tmp", "PATH": self.local_bin},
             )
 
 
