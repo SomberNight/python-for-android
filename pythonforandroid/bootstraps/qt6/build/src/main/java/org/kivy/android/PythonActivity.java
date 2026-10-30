@@ -42,8 +42,6 @@ import android.net.Uri;
 
 import org.renpy.android.ResourceManager;
 
-import org.kivy.android.launcher.Project;
-
 
 import org.qtproject.qt.android.bindings.QtActivity;
 

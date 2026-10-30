@@ -7,11 +7,8 @@ import android.app.Activity;
 import android.util.Log;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 
 import org.renpy.android.ResourceManager;
-
-import org.kivy.android.launcher.Project;
 
 /*
  * this class is added to android.app.static_init_classes metadata key.
@@ -50,29 +47,10 @@ public class PythonActivityInit {
 
         PythonActivity.initialize(); //Bundle extras = mActivity.getIntent().getExtras();
 
-        if (mActivity.getIntent() != null && mActivity.getIntent().getAction() != null &&
-                mActivity.getIntent().getAction().equals("org.kivy.LAUNCH")) {
-            File path = new File(mActivity.getIntent().getData().getSchemeSpecificPart());
-
-            Project p = Project.scanDirectory(path);
-            String entry_point = mActivity.getEntryPoint(p.dir);
-            PythonActivity.nativeSetenv("ANDROID_ENTRYPOINT", p.dir + "/" + entry_point);
-            PythonActivity.nativeSetenv("ANDROID_ARGUMENT", p.dir);
-            PythonActivity.nativeSetenv("ANDROID_APP_PATH", p.dir);
-
-            if (p != null) {
-                if (p.landscape) {
-                    mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                } else {
-                    mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                }
-            }
-        } else {
-            String entry_point = mActivity.getEntryPoint(app_root_dir);
-            PythonActivity.nativeSetenv("ANDROID_ENTRYPOINT", entry_point);
-            PythonActivity.nativeSetenv("ANDROID_ARGUMENT", app_root_dir);
-            PythonActivity.nativeSetenv("ANDROID_APP_PATH", app_root_dir);
-        }
+        String entry_point = mActivity.getEntryPoint(app_root_dir);
+        PythonActivity.nativeSetenv("ANDROID_ENTRYPOINT", entry_point);
+        PythonActivity.nativeSetenv("ANDROID_ARGUMENT", app_root_dir);
+        PythonActivity.nativeSetenv("ANDROID_APP_PATH", app_root_dir);
 
         String mFilesDirectory = mActivity.getFilesDir().getAbsolutePath();
         Log.v(TAG, "Setting env vars for start.c and Python to use");
